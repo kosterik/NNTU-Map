@@ -91,7 +91,7 @@ class NotificationService {
       try {
         new Notification(title, {
           body: body,
-          icon: "/app_assets/icon.png"
+          icon: "../app_assets/icon.png"
         });
       } catch (err) {}
     }
