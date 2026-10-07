@@ -3,7 +3,6 @@ package com.kosterik.nntu;
 import android.app.Activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,33 +12,32 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * MainActivity for NNTU Map & Schedule
- * Copies all assets to internal storage on first launch, then loads from real filesystem.
- * This eliminates all ERR_FILE_NOT_FOUND / ERR_NAME_NOT_RESOLVED issues
- * across all Android versions and OEM skins (Samsung, Xiaomi, etc).
+ * Runs local APK assets via an embedded loopback HTTP server (127.0.0.1).
+ * Completely immune to:
+ * - net::ERR_FILE_NOT_FOUND (no file:/// URI dependencies)
+ * - net::ERR_NAME_NOT_RESOLVED (no external DNS queries)
+ * - Multiprocess WebView renderer sandboxing on Samsung OneUI, Xiaomi MIUI, etc.
  * Created by kosterik
  */
 public class MainActivity extends Activity {
 
     private WebView mWebView;
+    private LocalAssetServer mServer;
     private static final String TAG = "NNTU_MAP";
-    private static final String PREFS = "nntu_prefs";
-    private static final String KEY_ASSETS_VERSION = "assets_v";
-    private static final int CURRENT_ASSETS_VERSION = 3;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Step 1: Extract assets to internal storage (fast — only on first run or update)
-        extractAssetsIfNeeded();
+        // Step 1: Start embedded loopback asset server
+        mServer = new LocalAssetServer(getAssets());
+        int port = mServer.start();
 
         // Step 2: Set up WebView
         mWebView = new WebView(this);
@@ -51,8 +49,6 @@ public class MainActivity extends Activity {
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
@@ -83,10 +79,12 @@ public class MainActivity extends Activity {
             }
 
             private boolean handleExternalUrl(Uri uri) {
-                String scheme = uri.getScheme();
-                if (scheme == null) return false;
-                if ("file".equalsIgnoreCase(scheme)) return false;
+                String host = uri.getHost();
+                if ("127.0.0.1".equals(host) || "localhost".equals(host)) {
+                    return false;
+                }
 
+                String scheme = uri.getScheme();
                 if ("tg".equalsIgnoreCase(scheme)
                         || "http".equalsIgnoreCase(scheme)
                         || "https".equalsIgnoreCase(scheme)) {
@@ -100,74 +98,32 @@ public class MainActivity extends Activity {
             }
         });
 
-        // Step 3: Load from real filesystem
-        File indexFile = new File(getFilesDir(), "www/src/index.html");
-        String url = Uri.fromFile(indexFile).toString();
-        Log.d(TAG, "Loading: " + url);
-        mWebView.loadUrl(url);
+        // Step 3: Load application
+        if (port > 0) {
+            String appUrl = "http://127.0.0.1:" + port + "/src/index.html";
+            Log.d(TAG, "Loading local app URL: " + appUrl);
+            mWebView.loadUrl(appUrl);
+        } else {
+            Log.e(TAG, "Local server failed to start, falling back to in-memory asset load");
+            loadAppContentFallback();
+        }
     }
 
-    /**
-     * Extracts APK assets (src/ and app_assets/) to getFilesDir()/www/
-     * so WebView can load them via file:///data/data/com.kosterik.nntu/files/www/
-     * Only runs on first launch or when CURRENT_ASSETS_VERSION changes.
-     */
-    private void extractAssetsIfNeeded() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        int installed = prefs.getInt(KEY_ASSETS_VERSION, 0);
-        if (installed >= CURRENT_ASSETS_VERSION) {
-            File check = new File(getFilesDir(), "www/src/index.html");
-            if (check.exists()) return;
-        }
-
-        Log.d(TAG, "Extracting assets to internal storage...");
-        File wwwDir = new File(getFilesDir(), "www");
-
+    private void loadAppContentFallback() {
         try {
-            copyAssetFolder("src", new File(wwwDir, "src"));
-            copyAssetFolder("app_assets", new File(wwwDir, "app_assets"));
-            prefs.edit().putInt(KEY_ASSETS_VERSION, CURRENT_ASSETS_VERSION).apply();
-            Log.d(TAG, "Assets extracted successfully.");
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to extract assets", e);
-        }
-    }
-
-    private void copyAssetFolder(String assetPath, File destDir) throws Exception {
-        String[] list = getAssets().list(assetPath);
-        if (list == null || list.length == 0) {
-            // It's a file, copy it
-            copyAssetFile(assetPath, destDir);
-            return;
-        }
-
-        // It's a directory
-        destDir.mkdirs();
-        for (String child : list) {
-            String childAssetPath = assetPath + "/" + child;
-            File childDest = new File(destDir, child);
-
-            String[] subList = getAssets().list(childAssetPath);
-            if (subList != null && subList.length > 0) {
-                copyAssetFolder(childAssetPath, childDest);
-            } else {
-                copyAssetFile(childAssetPath, childDest);
+            InputStream is = getAssets().open("src/index.html");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            int read;
+            while ((read = is.read(buf)) != -1) {
+                baos.write(buf, 0, read);
             }
+            is.close();
+            String html = baos.toString("UTF-8");
+            mWebView.loadDataWithBaseURL("http://127.0.0.1/", html, "text/html", "UTF-8", null);
+        } catch (Exception e) {
+            Log.e(TAG, "Fallback in-memory load failed", e);
         }
-    }
-
-    private void copyAssetFile(String assetPath, File destFile) throws Exception {
-        destFile.getParentFile().mkdirs();
-        InputStream in = getAssets().open(assetPath);
-        OutputStream out = new FileOutputStream(destFile);
-        byte[] buf = new byte[65536];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        out.flush();
-        out.close();
-        in.close();
     }
 
     @Override
@@ -177,5 +133,16 @@ public class MainActivity extends Activity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mServer != null) {
+            mServer.stop();
+        }
+        if (mWebView != null) {
+            mWebView.destroy();
+        }
+        super.onDestroy();
     }
 }
