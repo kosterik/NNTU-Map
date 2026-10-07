@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>НГТУ Расписание — Виджет</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background-color: #090d13;
+      padding: 14px;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+    .widget-standalone-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--color-border-default);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 10px 0 6px 0;
+      color: var(--color-accent-fg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-standalone-header">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <img src="../app_assets/icon.png" style="width: 22px; height: 22px; border-radius: 4px;">
+      <span style="font-size: 14px; font-weight: 700;">НГТУ Расписание</span>
+    </div>
+    <span class="widget-pill" id="mini-group-pill">26-ИВТ-4-1</span>
+  </div>
+
+  <div class="section-title">
+    <span>СЕГОДНЯ:</span>
+    <span id="mini-today-date" style="color:var(--color-fg-muted); font-weight:normal; font-size:10px;"></span>
+  </div>
+  <div id="mini-today-lessons"></div>
+
+  <div class="section-title" style="color: var(--color-purple-fg); margin-top: 14px;">
+    <span>ЗАВТРА:</span>
+    <span id="mini-tomorrow-date" style="color:var(--color-fg-muted); font-weight:normal; font-size:10px;"></span>
+  </div>
+  <div id="mini-tomorrow-lessons"></div>
+
+  <script>
+    async function loadWidgetData() {
+      let schedule = null;
+      const cached = localStorage.getItem("nntu_student_schedule");
+      if (cached) {
+        try { schedule = JSON.parse(cached); } catch(e){}
+      }
+      if (!schedule) {
+        const resp = await fetch("data/default_schedule.json");
+        schedule = await resp.json();
+      }
+
+      document.getElementById("mini-group-pill").textContent = schedule.group || "26-ИВТ-4-1";
+
+      const now = new Date();
+      const todayIdx = now.getDay() === 0 ? 1 : now.getDay();
+      let tomorrowIdx = todayIdx + 1;
+      if (tomorrowIdx > 6) tomorrowIdx = 1;
+
+      const days = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+      document.getElementById("mini-today-date").textContent = `${days[todayIdx]}, ${now.toLocaleDateString()}`;
+      
+      const tomorrowDate = new Date();
+      tomorrowDate.setDate(now.getDate() + 1);
+      document.getElementById("mini-tomorrow-date").textContent = `${days[tomorrowIdx]}, ${tomorrowDate.toLocaleDateString()}`;
+
+      const year = now.getFullYear();
+      let start = new Date(year, 8, 1);
+      if (now.getMonth() < 7) start = new Date(year, 1, 9);
+      const startDay = (start.getDay() + 6) % 7;
+      const startMonday = new Date(start);
+      startMonday.setDate(start.getDate() - startDay);
+      const weekNum = Math.max(1, Math.floor((now.getTime() - startMonday.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1);
+      const weekType = (weekNum % 2 === 0) ? "denominator" : "numerator";
+      const todayLessons = schedule.weeks[weekType].days[todayIdx.toString()]?.lessons || [];
+      const tomorrowLessons = schedule.weeks[weekType].days[tomorrowIdx.toString()]?.lessons || [];
+
+      function renderList(lessons, containerId) {
+        const container = document.getElementById(containerId);
+        if (lessons.length === 0) {
+          container.innerHTML = '<div style="color:var(--color-fg-subtle); font-size:12px; padding:6px 0;">Пар нет 🎉</div>';
+          return;
+        }
+        container.innerHTML = lessons.map(l => `
+          <div class="widget-content-item">
+            <div>
+              <div class="widget-subj">${l.subject}</div>
+              <div class="widget-time">${l.time} • ${l.type}</div>
+            </div>
+            <div class="widget-room">к.${l.building} ${l.room}</div>
+          </div>
+        `).join("");
+      }
+
+      renderList(todayLessons, "mini-today-lessons");
+      renderList(tomorrowLessons, "mini-tomorrow-lessons");
+    }
+
+    loadWidgetData();
+  </script>
+</body>
+</html>

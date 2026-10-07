@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NNTU Map</string>
+    <string name="widget_tomorrow_desc">Показывает расписание занятий на завтрашний день</string>
+    <string name="widget_dual_desc">Компактный обзор расписания на сегодня и завтра</string>
+</resources>

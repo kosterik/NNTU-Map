@@ -1,0 +1,3783 @@
+{
+  "1": {
+    "building": "1",
+    "base_floors": [
+      "1level non-active.png",
+      "1level up weird.png",
+      "1level up.png",
+      "2level 1161.png",
+      "2level down.png",
+      "2level non-active.png",
+      "2level up weird.png",
+      "2level up.png",
+      "3level non-active.png"
+    ],
+    "rooms_count": 193,
+    "rooms": [
+      {
+        "room": "1101",
+        "file": "1101.png",
+        "floor": "1"
+      },
+      {
+        "room": "1102",
+        "file": "1102.png",
+        "floor": "1"
+      },
+      {
+        "room": "1103",
+        "file": "1103.png",
+        "floor": "1"
+      },
+      {
+        "room": "1104",
+        "file": "1104.png",
+        "floor": "1"
+      },
+      {
+        "room": "1105",
+        "file": "1105.png",
+        "floor": "1"
+      },
+      {
+        "room": "1106",
+        "file": "1106.png",
+        "floor": "1"
+      },
+      {
+        "room": "1107",
+        "file": "1107.png",
+        "floor": "1"
+      },
+      {
+        "room": "1108",
+        "file": "1108.png",
+        "floor": "1"
+      },
+      {
+        "room": "1109",
+        "file": "1109.png",
+        "floor": "1"
+      },
+      {
+        "room": "1110",
+        "file": "1110.png",
+        "floor": "1"
+      },
+      {
+        "room": "1111",
+        "file": "1111.png",
+        "floor": "1"
+      },
+      {
+        "room": "1112",
+        "file": "1112.png",
+        "floor": "1"
+      },
+      {
+        "room": "1113",
+        "file": "1113.png",
+        "floor": "1"
+      },
+      {
+        "room": "1114",
+        "file": "1114.png",
+        "floor": "1"
+      },
+      {
+        "room": "1115",
+        "file": "1115.png",
+        "floor": "1"
+      },
+      {
+        "room": "1116",
+        "file": "1116.png",
+        "floor": "1"
+      },
+      {
+        "room": "1117",
+        "file": "1117.png",
+        "floor": "1"
+      },
+      {
+        "room": "1118",
+        "file": "1118.png",
+        "floor": "1"
+      },
+      {
+        "room": "1119",
+        "file": "1119.png",
+        "floor": "1"
+      },
+      {
+        "room": "1120",
+        "file": "1120.png",
+        "floor": "1"
+      },
+      {
+        "room": "1121",
+        "file": "1121.png",
+        "floor": "1"
+      },
+      {
+        "room": "1122",
+        "file": "1122.png",
+        "floor": "1"
+      },
+      {
+        "room": "1123",
+        "file": "1123.png",
+        "floor": "1"
+      },
+      {
+        "room": "1124",
+        "file": "1124.png",
+        "floor": "1"
+      },
+      {
+        "room": "1126",
+        "file": "1126.png",
+        "floor": "1"
+      },
+      {
+        "room": "1128",
+        "file": "1128.png",
+        "floor": "1"
+      },
+      {
+        "room": "1129",
+        "file": "1129.png",
+        "floor": "1"
+      },
+      {
+        "room": "1130",
+        "file": "1130.png",
+        "floor": "1"
+      },
+      {
+        "room": "1131",
+        "file": "1131.png",
+        "floor": "1"
+      },
+      {
+        "room": "1132",
+        "file": "1132.png",
+        "floor": "1"
+      },
+      {
+        "room": "1133",
+        "file": "1133.png",
+        "floor": "1"
+      },
+      {
+        "room": "1134",
+        "file": "1134.png",
+        "floor": "1"
+      },
+      {
+        "room": "1135",
+        "file": "1135.png",
+        "floor": "1"
+      },
+      {
+        "room": "1136",
+        "file": "1136.png",
+        "floor": "1"
+      },
+      {
+        "room": "1137",
+        "file": "1137.png",
+        "floor": "1"
+      },
+      {
+        "room": "1138",
+        "file": "1138.png",
+        "floor": "1"
+      },
+      {
+        "room": "1139",
+        "file": "1139.png",
+        "floor": "1"
+      },
+      {
+        "room": "1140",
+        "file": "1140.png",
+        "floor": "1"
+      },
+      {
+        "room": "1141",
+        "file": "1141.png",
+        "floor": "1"
+      },
+      {
+        "room": "1142",
+        "file": "1142.png",
+        "floor": "1"
+      },
+      {
+        "room": "1143",
+        "file": "1143.png",
+        "floor": "1"
+      },
+      {
+        "room": "1144",
+        "file": "1144.png",
+        "floor": "1"
+      },
+      {
+        "room": "1145",
+        "file": "1145.png",
+        "floor": "1"
+      },
+      {
+        "room": "1146",
+        "file": "1146.png",
+        "floor": "1"
+      },
+      {
+        "room": "1147",
+        "file": "1147.png",
+        "floor": "1"
+      },
+      {
+        "room": "1148",
+        "file": "1148.png",
+        "floor": "1"
+      },
+      {
+        "room": "1149",
+        "file": "1149.png",
+        "floor": "1"
+      },
+      {
+        "room": "1150",
+        "file": "1150.png",
+        "floor": "1"
+      },
+      {
+        "room": "1151",
+        "file": "1151.png",
+        "floor": "1"
+      },
+      {
+        "room": "1152",
+        "file": "1152.png",
+        "floor": "1"
+      },
+      {
+        "room": "1153",
+        "file": "1153.png",
+        "floor": "1"
+      },
+      {
+        "room": "1154",
+        "file": "1154.png",
+        "floor": "1"
+      },
+      {
+        "room": "1155",
+        "file": "1155.png",
+        "floor": "1"
+      },
+      {
+        "room": "1156",
+        "file": "1156.png",
+        "floor": "1"
+      },
+      {
+        "room": "1157",
+        "file": "1157.png",
+        "floor": "1"
+      },
+      {
+        "room": "1158",
+        "file": "1158.png",
+        "floor": "1"
+      },
+      {
+        "room": "1159",
+        "file": "1159.png",
+        "floor": "1"
+      },
+      {
+        "room": "1160",
+        "file": "1160.png",
+        "floor": "1"
+      },
+      {
+        "room": "1161",
+        "file": "1161.png",
+        "floor": "1"
+      },
+      {
+        "room": "1201",
+        "file": "1201.png",
+        "floor": "2"
+      },
+      {
+        "room": "1202",
+        "file": "1202.png",
+        "floor": "2"
+      },
+      {
+        "room": "1203",
+        "file": "1203.png",
+        "floor": "2"
+      },
+      {
+        "room": "1204",
+        "file": "1204.png",
+        "floor": "2"
+      },
+      {
+        "room": "1205",
+        "file": "1205.png",
+        "floor": "2"
+      },
+      {
+        "room": "1206",
+        "file": "1206.png",
+        "floor": "2"
+      },
+      {
+        "room": "1207",
+        "file": "1207.png",
+        "floor": "2"
+      },
+      {
+        "room": "1208",
+        "file": "1208.png",
+        "floor": "2"
+      },
+      {
+        "room": "1209",
+        "file": "1209.png",
+        "floor": "2"
+      },
+      {
+        "room": "1210",
+        "file": "1210.png",
+        "floor": "2"
+      },
+      {
+        "room": "1211",
+        "file": "1211.png",
+        "floor": "2"
+      },
+      {
+        "room": "1212",
+        "file": "1212.png",
+        "floor": "2"
+      },
+      {
+        "room": "1213",
+        "file": "1213.png",
+        "floor": "2"
+      },
+      {
+        "room": "1214",
+        "file": "1214.png",
+        "floor": "2"
+      },
+      {
+        "room": "1215",
+        "file": "1215.png",
+        "floor": "2"
+      },
+      {
+        "room": "1216",
+        "file": "1216.png",
+        "floor": "2"
+      },
+      {
+        "room": "1217",
+        "file": "1217.png",
+        "floor": "2"
+      },
+      {
+        "room": "1218",
+        "file": "1218.png",
+        "floor": "2"
+      },
+      {
+        "room": "1219",
+        "file": "1219.png",
+        "floor": "2"
+      },
+      {
+        "room": "1220",
+        "file": "1220.png",
+        "floor": "2"
+      },
+      {
+        "room": "1221",
+        "file": "1221.png",
+        "floor": "2"
+      },
+      {
+        "room": "1222",
+        "file": "1222.png",
+        "floor": "2"
+      },
+      {
+        "room": "1223",
+        "file": "1223.png",
+        "floor": "2"
+      },
+      {
+        "room": "1224",
+        "file": "1224.png",
+        "floor": "2"
+      },
+      {
+        "room": "1229",
+        "file": "1229.png",
+        "floor": "2"
+      },
+      {
+        "room": "1230",
+        "file": "1230.png",
+        "floor": "2"
+      },
+      {
+        "room": "1231",
+        "file": "1231.png",
+        "floor": "2"
+      },
+      {
+        "room": "1232",
+        "file": "1232.png",
+        "floor": "2"
+      },
+      {
+        "room": "1233",
+        "file": "1233.png",
+        "floor": "2"
+      },
+      {
+        "room": "1234",
+        "file": "1234.png",
+        "floor": "2"
+      },
+      {
+        "room": "1236",
+        "file": "1236.png",
+        "floor": "2"
+      },
+      {
+        "room": "1239",
+        "file": "1239.png",
+        "floor": "2"
+      },
+      {
+        "room": "1240",
+        "file": "1240.png",
+        "floor": "2"
+      },
+      {
+        "room": "1241",
+        "file": "1241.png",
+        "floor": "2"
+      },
+      {
+        "room": "1242",
+        "file": "1242.png",
+        "floor": "2"
+      },
+      {
+        "room": "1243",
+        "file": "1243.png",
+        "floor": "2"
+      },
+      {
+        "room": "1244",
+        "file": "1244.png",
+        "floor": "2"
+      },
+      {
+        "room": "1245",
+        "file": "1245.png",
+        "floor": "2"
+      },
+      {
+        "room": "1246",
+        "file": "1246.png",
+        "floor": "2"
+      },
+      {
+        "room": "1247",
+        "file": "1247.png",
+        "floor": "2"
+      },
+      {
+        "room": "1248",
+        "file": "1248.png",
+        "floor": "2"
+      },
+      {
+        "room": "1249",
+        "file": "1249.png",
+        "floor": "2"
+      },
+      {
+        "room": "1250",
+        "file": "1250.png",
+        "floor": "2"
+      },
+      {
+        "room": "1251",
+        "file": "1251.png",
+        "floor": "2"
+      },
+      {
+        "room": "1252",
+        "file": "1252.png",
+        "floor": "2"
+      },
+      {
+        "room": "1253",
+        "file": "1253.png",
+        "floor": "2"
+      },
+      {
+        "room": "1254",
+        "file": "1254.png",
+        "floor": "2"
+      },
+      {
+        "room": "1255",
+        "file": "1255.png",
+        "floor": "2"
+      },
+      {
+        "room": "1256",
+        "file": "1256.png",
+        "floor": "2"
+      },
+      {
+        "room": "1257",
+        "file": "1257.png",
+        "floor": "2"
+      },
+      {
+        "room": "1258",
+        "file": "1258.png",
+        "floor": "2"
+      },
+      {
+        "room": "1259",
+        "file": "1259.png",
+        "floor": "2"
+      },
+      {
+        "room": "1260",
+        "file": "1260.png",
+        "floor": "2"
+      },
+      {
+        "room": "1261",
+        "file": "1261.png",
+        "floor": "2"
+      },
+      {
+        "room": "1262",
+        "file": "1262.png",
+        "floor": "2"
+      },
+      {
+        "room": "1263",
+        "file": "1263.png",
+        "floor": "2"
+      },
+      {
+        "room": "1264",
+        "file": "1264.png",
+        "floor": "2"
+      },
+      {
+        "room": "1265",
+        "file": "1265.png",
+        "floor": "2"
+      },
+      {
+        "room": "1266",
+        "file": "1266.png",
+        "floor": "2"
+      },
+      {
+        "room": "1267",
+        "file": "1267.png",
+        "floor": "2"
+      },
+      {
+        "room": "1268",
+        "file": "1268.png",
+        "floor": "2"
+      },
+      {
+        "room": "1269",
+        "file": "1269.png",
+        "floor": "2"
+      },
+      {
+        "room": "1270",
+        "file": "1270.png",
+        "floor": "2"
+      },
+      {
+        "room": "1271",
+        "file": "1271.png",
+        "floor": "2"
+      },
+      {
+        "room": "1274",
+        "file": "1274.png",
+        "floor": "2"
+      },
+      {
+        "room": "1275",
+        "file": "1275.png",
+        "floor": "2"
+      },
+      {
+        "room": "1276",
+        "file": "1276.png",
+        "floor": "2"
+      },
+      {
+        "room": "1277",
+        "file": "1277.png",
+        "floor": "2"
+      },
+      {
+        "room": "1278",
+        "file": "1278.png",
+        "floor": "2"
+      },
+      {
+        "room": "1280",
+        "file": "1280.png",
+        "floor": "2"
+      },
+      {
+        "room": "1281",
+        "file": "1281.png",
+        "floor": "2"
+      },
+      {
+        "room": "1283",
+        "file": "1283.png",
+        "floor": "2"
+      },
+      {
+        "room": "1301",
+        "file": "1301.png",
+        "floor": "3"
+      },
+      {
+        "room": "1302",
+        "file": "1302.png",
+        "floor": "3"
+      },
+      {
+        "room": "1303",
+        "file": "1303.png",
+        "floor": "3"
+      },
+      {
+        "room": "1305",
+        "file": "1305.png",
+        "floor": "3"
+      },
+      {
+        "room": "1306",
+        "file": "1306.png",
+        "floor": "3"
+      },
+      {
+        "room": "1307",
+        "file": "1307.png",
+        "floor": "3"
+      },
+      {
+        "room": "1308",
+        "file": "1308.png",
+        "floor": "3"
+      },
+      {
+        "room": "1310",
+        "file": "1310.png",
+        "floor": "3"
+      },
+      {
+        "room": "1311",
+        "file": "1311.png",
+        "floor": "3"
+      },
+      {
+        "room": "1312",
+        "file": "1312.png",
+        "floor": "3"
+      },
+      {
+        "room": "1313",
+        "file": "1313.png",
+        "floor": "3"
+      },
+      {
+        "room": "1314",
+        "file": "1314.png",
+        "floor": "3"
+      },
+      {
+        "room": "1315",
+        "file": "1315.png",
+        "floor": "3"
+      },
+      {
+        "room": "1316",
+        "file": "1316.png",
+        "floor": "3"
+      },
+      {
+        "room": "1317",
+        "file": "1317.png",
+        "floor": "3"
+      },
+      {
+        "room": "1318",
+        "file": "1318.png",
+        "floor": "3"
+      },
+      {
+        "room": "1319",
+        "file": "1319.png",
+        "floor": "3"
+      },
+      {
+        "room": "1320",
+        "file": "1320.png",
+        "floor": "3"
+      },
+      {
+        "room": "1321",
+        "file": "1321.png",
+        "floor": "3"
+      },
+      {
+        "room": "1322",
+        "file": "1322.png",
+        "floor": "3"
+      },
+      {
+        "room": "1323",
+        "file": "1323.png",
+        "floor": "3"
+      },
+      {
+        "room": "1324",
+        "file": "1324.png",
+        "floor": "3"
+      },
+      {
+        "room": "1325",
+        "file": "1325.png",
+        "floor": "3"
+      },
+      {
+        "room": "1326",
+        "file": "1326.png",
+        "floor": "3"
+      },
+      {
+        "room": "1327",
+        "file": "1327.png",
+        "floor": "3"
+      },
+      {
+        "room": "1328",
+        "file": "1328.png",
+        "floor": "3"
+      },
+      {
+        "room": "1329",
+        "file": "1329.png",
+        "floor": "3"
+      },
+      {
+        "room": "1330",
+        "file": "1330.png",
+        "floor": "3"
+      },
+      {
+        "room": "1331",
+        "file": "1331.png",
+        "floor": "3"
+      },
+      {
+        "room": "1332",
+        "file": "1332.png",
+        "floor": "3"
+      },
+      {
+        "room": "1333",
+        "file": "1333.png",
+        "floor": "3"
+      },
+      {
+        "room": "1334",
+        "file": "1334.png",
+        "floor": "3"
+      },
+      {
+        "room": "1335",
+        "file": "1335.png",
+        "floor": "3"
+      },
+      {
+        "room": "1336",
+        "file": "1336.png",
+        "floor": "3"
+      },
+      {
+        "room": "1337",
+        "file": "1337.png",
+        "floor": "3"
+      },
+      {
+        "room": "1338",
+        "file": "1338.png",
+        "floor": "3"
+      },
+      {
+        "room": "1339",
+        "file": "1339.png",
+        "floor": "3"
+      },
+      {
+        "room": "1340",
+        "file": "1340.png",
+        "floor": "3"
+      },
+      {
+        "room": "1341",
+        "file": "1341.png",
+        "floor": "3"
+      },
+      {
+        "room": "1342",
+        "file": "1342.png",
+        "floor": "3"
+      },
+      {
+        "room": "1343",
+        "file": "1343.png",
+        "floor": "3"
+      },
+      {
+        "room": "1344",
+        "file": "1344.png",
+        "floor": "3"
+      },
+      {
+        "room": "1345",
+        "file": "1345.png",
+        "floor": "3"
+      },
+      {
+        "room": "1346",
+        "file": "1346.png",
+        "floor": "3"
+      },
+      {
+        "room": "1347",
+        "file": "1347.png",
+        "floor": "3"
+      },
+      {
+        "room": "1348",
+        "file": "1348.png",
+        "floor": "3"
+      },
+      {
+        "room": "1349",
+        "file": "1349.png",
+        "floor": "3"
+      },
+      {
+        "room": "1350",
+        "file": "1350.png",
+        "floor": "3"
+      },
+      {
+        "room": "1351",
+        "file": "1351.png",
+        "floor": "3"
+      },
+      {
+        "room": "1352",
+        "file": "1352.png",
+        "floor": "3"
+      },
+      {
+        "room": "1353",
+        "file": "1353.png",
+        "floor": "3"
+      },
+      {
+        "room": "1354",
+        "file": "1354.png",
+        "floor": "3"
+      },
+      {
+        "room": "1355",
+        "file": "1355.png",
+        "floor": "3"
+      },
+      {
+        "room": "1356",
+        "file": "1356.png",
+        "floor": "3"
+      },
+      {
+        "room": "1357",
+        "file": "1357.png",
+        "floor": "3"
+      },
+      {
+        "room": "1358",
+        "file": "1358.png",
+        "floor": "3"
+      },
+      {
+        "room": "1359",
+        "file": "1359.png",
+        "floor": "3"
+      },
+      {
+        "room": "1360",
+        "file": "1360.png",
+        "floor": "3"
+      },
+      {
+        "room": "1361",
+        "file": "1361.png",
+        "floor": "3"
+      },
+      {
+        "room": "1362",
+        "file": "1362.png",
+        "floor": "3"
+      },
+      {
+        "room": "1363",
+        "file": "1363.png",
+        "floor": "3"
+      },
+      {
+        "room": "Магазин",
+        "file": "shop.png",
+        "floor": "1"
+      }
+    ]
+  },
+  "2": {
+    "building": "2",
+    "base_floors": [
+      "1level non-active.png",
+      "1level up.png",
+      "2level down.png",
+      "2level non-active.png",
+      "2level up.png",
+      "3level non-active.png"
+    ],
+    "rooms_count": 27,
+    "rooms": [
+      {
+        "room": "2101",
+        "file": "2101.png",
+        "floor": "1"
+      },
+      {
+        "room": "2102",
+        "file": "2102.png",
+        "floor": "1"
+      },
+      {
+        "room": "2103",
+        "file": "2103.png",
+        "floor": "1"
+      },
+      {
+        "room": "2104",
+        "file": "2104.png",
+        "floor": "1"
+      },
+      {
+        "room": "2105",
+        "file": "2105.png",
+        "floor": "1"
+      },
+      {
+        "room": "2106",
+        "file": "2106.png",
+        "floor": "1"
+      },
+      {
+        "room": "2107",
+        "file": "2107.png",
+        "floor": "1"
+      },
+      {
+        "room": "2108",
+        "file": "2108.png",
+        "floor": "1"
+      },
+      {
+        "room": "2201",
+        "file": "2201.png",
+        "floor": "2"
+      },
+      {
+        "room": "2202",
+        "file": "2202.png",
+        "floor": "2"
+      },
+      {
+        "room": "2203",
+        "file": "2203.png",
+        "floor": "2"
+      },
+      {
+        "room": "2204",
+        "file": "2204.png",
+        "floor": "2"
+      },
+      {
+        "room": "2205",
+        "file": "2205.png",
+        "floor": "2"
+      },
+      {
+        "room": "2206",
+        "file": "2206.png",
+        "floor": "2"
+      },
+      {
+        "room": "2207",
+        "file": "2207.png",
+        "floor": "2"
+      },
+      {
+        "room": "2208",
+        "file": "2208.png",
+        "floor": "2"
+      },
+      {
+        "room": "2210",
+        "file": "2210.png",
+        "floor": "2"
+      },
+      {
+        "room": "2211",
+        "file": "2211.png",
+        "floor": "2"
+      },
+      {
+        "room": "2301",
+        "file": "2301.png",
+        "floor": "3"
+      },
+      {
+        "room": "2302",
+        "file": "2302.png",
+        "floor": "3"
+      },
+      {
+        "room": "2303",
+        "file": "2303.png",
+        "floor": "3"
+      },
+      {
+        "room": "2304",
+        "file": "2304.png",
+        "floor": "3"
+      },
+      {
+        "room": "2305",
+        "file": "2305.png",
+        "floor": "3"
+      },
+      {
+        "room": "2306",
+        "file": "2306.png",
+        "floor": "3"
+      },
+      {
+        "room": "2307",
+        "file": "2307.png",
+        "floor": "3"
+      },
+      {
+        "room": "2308",
+        "file": "2308.png",
+        "floor": "3"
+      },
+      {
+        "room": "2309",
+        "file": "2309.png",
+        "floor": "3"
+      }
+    ]
+  },
+  "3": {
+    "building": "3",
+    "base_floors": [
+      "1level non-active.png",
+      "1level up.png",
+      "2level non-active.png",
+      "2level up.png",
+      "3level non-active.png"
+    ],
+    "rooms_count": 56,
+    "rooms": [
+      {
+        "room": "3102",
+        "file": "3102.png",
+        "floor": "1"
+      },
+      {
+        "room": "3103",
+        "file": "3103.png",
+        "floor": "1"
+      },
+      {
+        "room": "3104",
+        "file": "3104.png",
+        "floor": "1"
+      },
+      {
+        "room": "3105",
+        "file": "3105.png",
+        "floor": "1"
+      },
+      {
+        "room": "3106",
+        "file": "3106.png",
+        "floor": "1"
+      },
+      {
+        "room": "3107",
+        "file": "3107.png",
+        "floor": "1"
+      },
+      {
+        "room": "3108",
+        "file": "3108.png",
+        "floor": "1"
+      },
+      {
+        "room": "3109",
+        "file": "3109.png",
+        "floor": "1"
+      },
+      {
+        "room": "3110",
+        "file": "3110.png",
+        "floor": "1"
+      },
+      {
+        "room": "3111",
+        "file": "3111.png",
+        "floor": "1"
+      },
+      {
+        "room": "3112",
+        "file": "3112.png",
+        "floor": "1"
+      },
+      {
+        "room": "3113",
+        "file": "3113.png",
+        "floor": "1"
+      },
+      {
+        "room": "3114",
+        "file": "3114.png",
+        "floor": "1"
+      },
+      {
+        "room": "3118",
+        "file": "3118.png",
+        "floor": "1"
+      },
+      {
+        "room": "3128",
+        "file": "3128.png",
+        "floor": "1"
+      },
+      {
+        "room": "3129",
+        "file": "3129.png",
+        "floor": "1"
+      },
+      {
+        "room": "3131",
+        "file": "3131.png",
+        "floor": "1"
+      },
+      {
+        "room": "3132",
+        "file": "3132.png",
+        "floor": "1"
+      },
+      {
+        "room": "3133",
+        "file": "3133.png",
+        "floor": "1"
+      },
+      {
+        "room": "3135",
+        "file": "3135.png",
+        "floor": "1"
+      },
+      {
+        "room": "3136",
+        "file": "3136.png",
+        "floor": "1"
+      },
+      {
+        "room": "3137",
+        "file": "3137.png",
+        "floor": "1"
+      },
+      {
+        "room": "3201",
+        "file": "3201.png",
+        "floor": "2"
+      },
+      {
+        "room": "3202",
+        "file": "3202.png",
+        "floor": "2"
+      },
+      {
+        "room": "3203",
+        "file": "3203.png",
+        "floor": "2"
+      },
+      {
+        "room": "3204",
+        "file": "3204.png",
+        "floor": "2"
+      },
+      {
+        "room": "3205",
+        "file": "3205.png",
+        "floor": "2"
+      },
+      {
+        "room": "3206",
+        "file": "3206.png",
+        "floor": "2"
+      },
+      {
+        "room": "3207",
+        "file": "3207.png",
+        "floor": "2"
+      },
+      {
+        "room": "3208",
+        "file": "3208.png",
+        "floor": "2"
+      },
+      {
+        "room": "3209",
+        "file": "3209.png",
+        "floor": "2"
+      },
+      {
+        "room": "3210",
+        "file": "3210.png",
+        "floor": "2"
+      },
+      {
+        "room": "3211",
+        "file": "3211.png",
+        "floor": "2"
+      },
+      {
+        "room": "3213",
+        "file": "3213.png",
+        "floor": "2"
+      },
+      {
+        "room": "3214",
+        "file": "3214.png",
+        "floor": "2"
+      },
+      {
+        "room": "3215",
+        "file": "3215.png",
+        "floor": "2"
+      },
+      {
+        "room": "3216",
+        "file": "3216.png",
+        "floor": "2"
+      },
+      {
+        "room": "3217",
+        "file": "3217.png",
+        "floor": "2"
+      },
+      {
+        "room": "3218",
+        "file": "3218.png",
+        "floor": "2"
+      },
+      {
+        "room": "3219",
+        "file": "3219.png",
+        "floor": "2"
+      },
+      {
+        "room": "3220",
+        "file": "3220.png",
+        "floor": "2"
+      },
+      {
+        "room": "3222",
+        "file": "3222.png",
+        "floor": "2"
+      },
+      {
+        "room": "3301",
+        "file": "3301.png",
+        "floor": "3"
+      },
+      {
+        "room": "3302",
+        "file": "3302.png",
+        "floor": "3"
+      },
+      {
+        "room": "3303",
+        "file": "3303.png",
+        "floor": "3"
+      },
+      {
+        "room": "3304",
+        "file": "3304.png",
+        "floor": "3"
+      },
+      {
+        "room": "3305",
+        "file": "3305.png",
+        "floor": "3"
+      },
+      {
+        "room": "3306",
+        "file": "3306.png",
+        "floor": "3"
+      },
+      {
+        "room": "3307",
+        "file": "3307.png",
+        "floor": "3"
+      },
+      {
+        "room": "3308",
+        "file": "3308.png",
+        "floor": "3"
+      },
+      {
+        "room": "3309",
+        "file": "3309.png",
+        "floor": "3"
+      },
+      {
+        "room": "3310",
+        "file": "3310.png",
+        "floor": "3"
+      },
+      {
+        "room": "3311",
+        "file": "3311.png",
+        "floor": "3"
+      },
+      {
+        "room": "3312",
+        "file": "3312.png",
+        "floor": "3"
+      },
+      {
+        "room": "3313",
+        "file": "3313.png",
+        "floor": "3"
+      },
+      {
+        "room": "3315",
+        "file": "3315.png",
+        "floor": "3"
+      }
+    ]
+  },
+  "4": {
+    "building": "4",
+    "base_floors": [
+      "1level non-active.png",
+      "1level to.png",
+      "1level up sec.png",
+      "1level up.png",
+      "2level non-active.png",
+      "2level up sec.png",
+      "2level up.png",
+      "3level non-active.png",
+      "3level up sec.png",
+      "3level up.png",
+      "4level non-active.png"
+    ],
+    "rooms_count": 51,
+    "rooms": [
+      {
+        "room": "4101",
+        "file": "4101.png",
+        "floor": "1"
+      },
+      {
+        "room": "4102",
+        "file": "4102.png",
+        "floor": "1"
+      },
+      {
+        "room": "4103",
+        "file": "4103.png",
+        "floor": "1"
+      },
+      {
+        "room": "4104",
+        "file": "4104.png",
+        "floor": "1"
+      },
+      {
+        "room": "4105",
+        "file": "4105.png",
+        "floor": "1"
+      },
+      {
+        "room": "4106",
+        "file": "4106.png",
+        "floor": "1"
+      },
+      {
+        "room": "4107",
+        "file": "4107.png",
+        "floor": "1"
+      },
+      {
+        "room": "4108",
+        "file": "4108.png",
+        "floor": "1"
+      },
+      {
+        "room": "4109",
+        "file": "4109.png",
+        "floor": "1"
+      },
+      {
+        "room": "4110",
+        "file": "4110.png",
+        "floor": "1"
+      },
+      {
+        "room": "4111",
+        "file": "4111.png",
+        "floor": "1"
+      },
+      {
+        "room": "4112",
+        "file": "4112.png",
+        "floor": "1"
+      },
+      {
+        "room": "4113",
+        "file": "4113.png",
+        "floor": "1"
+      },
+      {
+        "room": "4114",
+        "file": "4114.png",
+        "floor": "1"
+      },
+      {
+        "room": "4115",
+        "file": "4115.png",
+        "floor": "1"
+      },
+      {
+        "room": "4116",
+        "file": "4116.png",
+        "floor": "1"
+      },
+      {
+        "room": "4117",
+        "file": "4117.png",
+        "floor": "1"
+      },
+      {
+        "room": "4118",
+        "file": "4118.png",
+        "floor": "1"
+      },
+      {
+        "room": "4119",
+        "file": "4119.png",
+        "floor": "1"
+      },
+      {
+        "room": "4120",
+        "file": "4120.png",
+        "floor": "1"
+      },
+      {
+        "room": "4121",
+        "file": "4121.png",
+        "floor": "1"
+      },
+      {
+        "room": "4201",
+        "file": "4201.png",
+        "floor": "2"
+      },
+      {
+        "room": "4202",
+        "file": "4202.png",
+        "floor": "2"
+      },
+      {
+        "room": "4203",
+        "file": "4203.png",
+        "floor": "2"
+      },
+      {
+        "room": "4204",
+        "file": "4204.png",
+        "floor": "2"
+      },
+      {
+        "room": "4206",
+        "file": "4206.png",
+        "floor": "2"
+      },
+      {
+        "room": "4207",
+        "file": "4207.png",
+        "floor": "2"
+      },
+      {
+        "room": "4209",
+        "file": "4209.png",
+        "floor": "2"
+      },
+      {
+        "room": "4210",
+        "file": "4210.png",
+        "floor": "2"
+      },
+      {
+        "room": "4211",
+        "file": "4211.png",
+        "floor": "2"
+      },
+      {
+        "room": "4301",
+        "file": "4301.png",
+        "floor": "3"
+      },
+      {
+        "room": "4302",
+        "file": "4302.png",
+        "floor": "3"
+      },
+      {
+        "room": "4303",
+        "file": "4303.png",
+        "floor": "3"
+      },
+      {
+        "room": "4304",
+        "file": "4304.png",
+        "floor": "3"
+      },
+      {
+        "room": "4305",
+        "file": "4305.png",
+        "floor": "3"
+      },
+      {
+        "room": "4306",
+        "file": "4306.png",
+        "floor": "3"
+      },
+      {
+        "room": "4307",
+        "file": "4307.png",
+        "floor": "3"
+      },
+      {
+        "room": "4308",
+        "file": "4308.png",
+        "floor": "3"
+      },
+      {
+        "room": "4310",
+        "file": "4310.png",
+        "floor": "3"
+      },
+      {
+        "room": "4311",
+        "file": "4311.png",
+        "floor": "3"
+      },
+      {
+        "room": "4312",
+        "file": "4312.png",
+        "floor": "3"
+      },
+      {
+        "room": "4401",
+        "file": "4401.png",
+        "floor": "4"
+      },
+      {
+        "room": "4402",
+        "file": "4402.png",
+        "floor": "4"
+      },
+      {
+        "room": "4403",
+        "file": "4403.png",
+        "floor": "4"
+      },
+      {
+        "room": "4404",
+        "file": "4404.png",
+        "floor": "4"
+      },
+      {
+        "room": "4405",
+        "file": "4405.png",
+        "floor": "4"
+      },
+      {
+        "room": "4406",
+        "file": "4406.png",
+        "floor": "4"
+      },
+      {
+        "room": "4407",
+        "file": "4407.png",
+        "floor": "4"
+      },
+      {
+        "room": "4408",
+        "file": "4408.png",
+        "floor": "4"
+      },
+      {
+        "room": "4409",
+        "file": "4409.png",
+        "floor": "4"
+      },
+      {
+        "room": "4412",
+        "file": "4412.png",
+        "floor": "4"
+      }
+    ]
+  },
+  "5": {
+    "building": "5",
+    "base_floors": [
+      "1level non-active.png",
+      "1level up sec.png",
+      "1level up.png",
+      "2level non-active.png",
+      "2level up sec.png",
+      "2level up.png",
+      "3level non-active.png",
+      "3level up sec.png",
+      "3level up.png",
+      "4level non-active.png"
+    ],
+    "rooms_count": 119,
+    "rooms": [
+      {
+        "room": "5101",
+        "file": "5101.png",
+        "floor": "1"
+      },
+      {
+        "room": "5102",
+        "file": "5102.png",
+        "floor": "1"
+      },
+      {
+        "room": "5103",
+        "file": "5103.png",
+        "floor": "1"
+      },
+      {
+        "room": "5104",
+        "file": "5104.png",
+        "floor": "1"
+      },
+      {
+        "room": "5106",
+        "file": "5106.png",
+        "floor": "1"
+      },
+      {
+        "room": "5107",
+        "file": "5107.png",
+        "floor": "1"
+      },
+      {
+        "room": "5108",
+        "file": "5108.png",
+        "floor": "1"
+      },
+      {
+        "room": "5109",
+        "file": "5109.png",
+        "floor": "1"
+      },
+      {
+        "room": "5110",
+        "file": "5110.png",
+        "floor": "1"
+      },
+      {
+        "room": "5111",
+        "file": "5111.png",
+        "floor": "1"
+      },
+      {
+        "room": "5112",
+        "file": "5112.png",
+        "floor": "1"
+      },
+      {
+        "room": "5113",
+        "file": "5113.png",
+        "floor": "1"
+      },
+      {
+        "room": "5114",
+        "file": "5114.png",
+        "floor": "1"
+      },
+      {
+        "room": "5115",
+        "file": "5115.png",
+        "floor": "1"
+      },
+      {
+        "room": "5117",
+        "file": "5117.png",
+        "floor": "1"
+      },
+      {
+        "room": "5118",
+        "file": "5118.png",
+        "floor": "1"
+      },
+      {
+        "room": "5119",
+        "file": "5119.png",
+        "floor": "1"
+      },
+      {
+        "room": "5120",
+        "file": "5120.png",
+        "floor": "1"
+      },
+      {
+        "room": "5121",
+        "file": "5121.png",
+        "floor": "1"
+      },
+      {
+        "room": "5122",
+        "file": "5122.png",
+        "floor": "1"
+      },
+      {
+        "room": "5123",
+        "file": "5123.png",
+        "floor": "1"
+      },
+      {
+        "room": "5124",
+        "file": "5124.png",
+        "floor": "1"
+      },
+      {
+        "room": "5125",
+        "file": "5125.png",
+        "floor": "1"
+      },
+      {
+        "room": "5126",
+        "file": "5126.png",
+        "floor": "1"
+      },
+      {
+        "room": "5127",
+        "file": "5127.png",
+        "floor": "1"
+      },
+      {
+        "room": "5201",
+        "file": "5201.png",
+        "floor": "2"
+      },
+      {
+        "room": "5202",
+        "file": "5202.png",
+        "floor": "2"
+      },
+      {
+        "room": "5203",
+        "file": "5203.png",
+        "floor": "2"
+      },
+      {
+        "room": "5204",
+        "file": "5204.png",
+        "floor": "2"
+      },
+      {
+        "room": "5206",
+        "file": "5206.png",
+        "floor": "2"
+      },
+      {
+        "room": "5207",
+        "file": "5207.png",
+        "floor": "2"
+      },
+      {
+        "room": "5208",
+        "file": "5208.png",
+        "floor": "2"
+      },
+      {
+        "room": "5209",
+        "file": "5209.png",
+        "floor": "2"
+      },
+      {
+        "room": "5210",
+        "file": "5210.png",
+        "floor": "2"
+      },
+      {
+        "room": "5211",
+        "file": "5211.png",
+        "floor": "2"
+      },
+      {
+        "room": "5212",
+        "file": "5212.png",
+        "floor": "2"
+      },
+      {
+        "room": "5213",
+        "file": "5213.png",
+        "floor": "2"
+      },
+      {
+        "room": "5214",
+        "file": "5214.png",
+        "floor": "2"
+      },
+      {
+        "room": "5215",
+        "file": "5215.png",
+        "floor": "2"
+      },
+      {
+        "room": "5216",
+        "file": "5216.png",
+        "floor": "2"
+      },
+      {
+        "room": "5217",
+        "file": "5217.png",
+        "floor": "2"
+      },
+      {
+        "room": "5218",
+        "file": "5218.png",
+        "floor": "2"
+      },
+      {
+        "room": "5219",
+        "file": "5219.png",
+        "floor": "2"
+      },
+      {
+        "room": "5220",
+        "file": "5220.png",
+        "floor": "2"
+      },
+      {
+        "room": "5221",
+        "file": "5221.png",
+        "floor": "2"
+      },
+      {
+        "room": "5222",
+        "file": "5222.png",
+        "floor": "2"
+      },
+      {
+        "room": "5223",
+        "file": "5223.png",
+        "floor": "2"
+      },
+      {
+        "room": "5224",
+        "file": "5224.png",
+        "floor": "2"
+      },
+      {
+        "room": "5225",
+        "file": "5225.png",
+        "floor": "2"
+      },
+      {
+        "room": "5226",
+        "file": "5226.png",
+        "floor": "2"
+      },
+      {
+        "room": "5227",
+        "file": "5227.png",
+        "floor": "2"
+      },
+      {
+        "room": "5228",
+        "file": "5228.png",
+        "floor": "2"
+      },
+      {
+        "room": "5229",
+        "file": "5229.png",
+        "floor": "2"
+      },
+      {
+        "room": "5230",
+        "file": "5230.png",
+        "floor": "2"
+      },
+      {
+        "room": "5231",
+        "file": "5231.png",
+        "floor": "2"
+      },
+      {
+        "room": "5232",
+        "file": "5232.png",
+        "floor": "2"
+      },
+      {
+        "room": "5233",
+        "file": "5233.png",
+        "floor": "2"
+      },
+      {
+        "room": "5234",
+        "file": "5234.png",
+        "floor": "2"
+      },
+      {
+        "room": "5235",
+        "file": "5235.png",
+        "floor": "2"
+      },
+      {
+        "room": "5236",
+        "file": "5236.png",
+        "floor": "2"
+      },
+      {
+        "room": "5250",
+        "file": "5250.png",
+        "floor": "2"
+      },
+      {
+        "room": "5301",
+        "file": "5301.png",
+        "floor": "3"
+      },
+      {
+        "room": "5302",
+        "file": "5302.png",
+        "floor": "3"
+      },
+      {
+        "room": "5303",
+        "file": "5303.png",
+        "floor": "3"
+      },
+      {
+        "room": "5305",
+        "file": "5305.png",
+        "floor": "3"
+      },
+      {
+        "room": "5306",
+        "file": "5306.png",
+        "floor": "3"
+      },
+      {
+        "room": "5307",
+        "file": "5307.png",
+        "floor": "3"
+      },
+      {
+        "room": "5308",
+        "file": "5308.png",
+        "floor": "3"
+      },
+      {
+        "room": "5309",
+        "file": "5309.png",
+        "floor": "3"
+      },
+      {
+        "room": "5311",
+        "file": "5311.png",
+        "floor": "3"
+      },
+      {
+        "room": "5312",
+        "file": "5312.png",
+        "floor": "3"
+      },
+      {
+        "room": "5313",
+        "file": "5313.png",
+        "floor": "3"
+      },
+      {
+        "room": "5314",
+        "file": "5314.png",
+        "floor": "3"
+      },
+      {
+        "room": "5315",
+        "file": "5315.png",
+        "floor": "3"
+      },
+      {
+        "room": "5316",
+        "file": "5316.png",
+        "floor": "3"
+      },
+      {
+        "room": "5317",
+        "file": "5317.png",
+        "floor": "3"
+      },
+      {
+        "room": "5318",
+        "file": "5318.png",
+        "floor": "3"
+      },
+      {
+        "room": "5319",
+        "file": "5319.png",
+        "floor": "3"
+      },
+      {
+        "room": "5320",
+        "file": "5320.png",
+        "floor": "3"
+      },
+      {
+        "room": "5321",
+        "file": "5321.png",
+        "floor": "3"
+      },
+      {
+        "room": "5322",
+        "file": "5322.png",
+        "floor": "3"
+      },
+      {
+        "room": "5323",
+        "file": "5323.png",
+        "floor": "3"
+      },
+      {
+        "room": "5324",
+        "file": "5324.png",
+        "floor": "3"
+      },
+      {
+        "room": "5325",
+        "file": "5325.png",
+        "floor": "3"
+      },
+      {
+        "room": "5326",
+        "file": "5326.png",
+        "floor": "3"
+      },
+      {
+        "room": "5327",
+        "file": "5327.png",
+        "floor": "3"
+      },
+      {
+        "room": "5328",
+        "file": "5328.png",
+        "floor": "3"
+      },
+      {
+        "room": "5329",
+        "file": "5329.png",
+        "floor": "3"
+      },
+      {
+        "room": "5330",
+        "file": "5330.png",
+        "floor": "3"
+      },
+      {
+        "room": "5331",
+        "file": "5331.png",
+        "floor": "3"
+      },
+      {
+        "room": "5332",
+        "file": "5332.png",
+        "floor": "3"
+      },
+      {
+        "room": "5401",
+        "file": "5401.png",
+        "floor": "4"
+      },
+      {
+        "room": "5402",
+        "file": "5402.png",
+        "floor": "4"
+      },
+      {
+        "room": "5403",
+        "file": "5403.png",
+        "floor": "4"
+      },
+      {
+        "room": "5404",
+        "file": "5404.png",
+        "floor": "4"
+      },
+      {
+        "room": "5405",
+        "file": "5405.png",
+        "floor": "4"
+      },
+      {
+        "room": "5407",
+        "file": "5407.png",
+        "floor": "4"
+      },
+      {
+        "room": "5408",
+        "file": "5408.png",
+        "floor": "4"
+      },
+      {
+        "room": "5409",
+        "file": "5409.png",
+        "floor": "4"
+      },
+      {
+        "room": "5410",
+        "file": "5410.png",
+        "floor": "4"
+      },
+      {
+        "room": "5411",
+        "file": "5411.png",
+        "floor": "4"
+      },
+      {
+        "room": "5412",
+        "file": "5412.png",
+        "floor": "4"
+      },
+      {
+        "room": "5413",
+        "file": "5413.png",
+        "floor": "4"
+      },
+      {
+        "room": "5414",
+        "file": "5414.png",
+        "floor": "4"
+      },
+      {
+        "room": "5415",
+        "file": "5415.png",
+        "floor": "4"
+      },
+      {
+        "room": "5416",
+        "file": "5416.png",
+        "floor": "4"
+      },
+      {
+        "room": "5417",
+        "file": "5417.png",
+        "floor": "4"
+      },
+      {
+        "room": "5418",
+        "file": "5418.png",
+        "floor": "4"
+      },
+      {
+        "room": "5419",
+        "file": "5419.png",
+        "floor": "4"
+      },
+      {
+        "room": "5420",
+        "file": "5420.png",
+        "floor": "4"
+      },
+      {
+        "room": "5421",
+        "file": "5421.png",
+        "floor": "4"
+      },
+      {
+        "room": "5422",
+        "file": "5422.png",
+        "floor": "4"
+      },
+      {
+        "room": "5423",
+        "file": "5423.png",
+        "floor": "4"
+      },
+      {
+        "room": "5424",
+        "file": "5424.png",
+        "floor": "4"
+      },
+      {
+        "room": "5425",
+        "file": "5425.png",
+        "floor": "4"
+      },
+      {
+        "room": "5426",
+        "file": "5426.png",
+        "floor": "4"
+      },
+      {
+        "room": "5427",
+        "file": "5427.png",
+        "floor": "4"
+      },
+      {
+        "room": "5428",
+        "file": "5428.png",
+        "floor": "4"
+      },
+      {
+        "room": "5429",
+        "file": "5429.png",
+        "floor": "4"
+      }
+    ]
+  },
+  "6": {
+    "building": "6",
+    "base_floors": [
+      "0level non-active.png",
+      "1level down 6020.png",
+      "1level down B3.png",
+      "1level down B4 B6.png",
+      "1level non-active.png",
+      "1level up 6243.png",
+      "1level up 6244.png",
+      "1level up B3.png",
+      "1level up B32.png",
+      "1level up B4.png",
+      "1level up B5.png",
+      "1level up B6.png",
+      "1level up B7.png",
+      "1level up.png",
+      "2level non-active.png",
+      "2level up.png",
+      "3level non-active.png",
+      "3level up.png",
+      "4level non-active.png",
+      "4level up.png",
+      "5level non-active.png",
+      "5level up.png"
+    ],
+    "rooms_count": 288,
+    "rooms": [
+      {
+        "room": "6020",
+        "file": "6020.png",
+        "floor": "0"
+      },
+      {
+        "room": "6020а",
+        "file": "6020a.png",
+        "floor": "0"
+      },
+      {
+        "room": "6022",
+        "file": "6022.png",
+        "floor": "0"
+      },
+      {
+        "room": "6023",
+        "file": "6023.png",
+        "floor": "0"
+      },
+      {
+        "room": "6024",
+        "file": "6024.png",
+        "floor": "0"
+      },
+      {
+        "room": "6025",
+        "file": "6025.png",
+        "floor": "0"
+      },
+      {
+        "room": "6029",
+        "file": "6029.png",
+        "floor": "0"
+      },
+      {
+        "room": "6033",
+        "file": "6033.png",
+        "floor": "0"
+      },
+      {
+        "room": "6037",
+        "file": "6037.png",
+        "floor": "0"
+      },
+      {
+        "room": "6038",
+        "file": "6038.png",
+        "floor": "0"
+      },
+      {
+        "room": "6039",
+        "file": "6039.png",
+        "floor": "0"
+      },
+      {
+        "room": "6040",
+        "file": "6040.png",
+        "floor": "0"
+      },
+      {
+        "room": "6041",
+        "file": "6041.png",
+        "floor": "0"
+      },
+      {
+        "room": "6042",
+        "file": "6042.png",
+        "floor": "0"
+      },
+      {
+        "room": "6043",
+        "file": "6043.png",
+        "floor": "0"
+      },
+      {
+        "room": "6100",
+        "file": "6100.png",
+        "floor": "1"
+      },
+      {
+        "room": "6101",
+        "file": "6101.png",
+        "floor": "1"
+      },
+      {
+        "room": "6103",
+        "file": "6103.png",
+        "floor": "1"
+      },
+      {
+        "room": "6104",
+        "file": "6104.png",
+        "floor": "1"
+      },
+      {
+        "room": "6105",
+        "file": "6105.png",
+        "floor": "1"
+      },
+      {
+        "room": "6106",
+        "file": "6106.png",
+        "floor": "1"
+      },
+      {
+        "room": "6110",
+        "file": "6110.png",
+        "floor": "1"
+      },
+      {
+        "room": "6111",
+        "file": "6111.png",
+        "floor": "1"
+      },
+      {
+        "room": "6112",
+        "file": "6112.png",
+        "floor": "1"
+      },
+      {
+        "room": "6113",
+        "file": "6113.png",
+        "floor": "1"
+      },
+      {
+        "room": "6114",
+        "file": "6114.png",
+        "floor": "1"
+      },
+      {
+        "room": "6115",
+        "file": "6115.png",
+        "floor": "1"
+      },
+      {
+        "room": "6116",
+        "file": "6116.png",
+        "floor": "1"
+      },
+      {
+        "room": "6117",
+        "file": "6117.png",
+        "floor": "1"
+      },
+      {
+        "room": "6119",
+        "file": "6119.png",
+        "floor": "1"
+      },
+      {
+        "room": "6121",
+        "file": "6121.png",
+        "floor": "1"
+      },
+      {
+        "room": "6122",
+        "file": "6122.png",
+        "floor": "1"
+      },
+      {
+        "room": "6123",
+        "file": "6123.png",
+        "floor": "1"
+      },
+      {
+        "room": "6124",
+        "file": "6124.png",
+        "floor": "1"
+      },
+      {
+        "room": "6125",
+        "file": "6125.png",
+        "floor": "1"
+      },
+      {
+        "room": "6126",
+        "file": "6126.png",
+        "floor": "1"
+      },
+      {
+        "room": "6127",
+        "file": "6127.png",
+        "floor": "1"
+      },
+      {
+        "room": "6128",
+        "file": "6128.png",
+        "floor": "1"
+      },
+      {
+        "room": "6130",
+        "file": "6130.png",
+        "floor": "1"
+      },
+      {
+        "room": "6131",
+        "file": "6131.png",
+        "floor": "1"
+      },
+      {
+        "room": "6135",
+        "file": "6135.png",
+        "floor": "1"
+      },
+      {
+        "room": "6136",
+        "file": "6136.png",
+        "floor": "1"
+      },
+      {
+        "room": "6137",
+        "file": "6137.png",
+        "floor": "1"
+      },
+      {
+        "room": "6138",
+        "file": "6138.png",
+        "floor": "1"
+      },
+      {
+        "room": "6139",
+        "file": "6139.png",
+        "floor": "1"
+      },
+      {
+        "room": "6140",
+        "file": "6140.png",
+        "floor": "1"
+      },
+      {
+        "room": "6141",
+        "file": "6141.png",
+        "floor": "1"
+      },
+      {
+        "room": "6142",
+        "file": "6142.png",
+        "floor": "1"
+      },
+      {
+        "room": "6143",
+        "file": "6143.png",
+        "floor": "1"
+      },
+      {
+        "room": "6144",
+        "file": "6144.png",
+        "floor": "1"
+      },
+      {
+        "room": "6145",
+        "file": "6145.png",
+        "floor": "1"
+      },
+      {
+        "room": "6146",
+        "file": "6146.png",
+        "floor": "1"
+      },
+      {
+        "room": "6147",
+        "file": "6147.png",
+        "floor": "1"
+      },
+      {
+        "room": "6148",
+        "file": "6148.png",
+        "floor": "1"
+      },
+      {
+        "room": "6151",
+        "file": "6151.png",
+        "floor": "1"
+      },
+      {
+        "room": "6152",
+        "file": "6152.png",
+        "floor": "1"
+      },
+      {
+        "room": "6153",
+        "file": "6153.png",
+        "floor": "1"
+      },
+      {
+        "room": "6154",
+        "file": "6154.png",
+        "floor": "1"
+      },
+      {
+        "room": "6155",
+        "file": "6155.png",
+        "floor": "1"
+      },
+      {
+        "room": "6156",
+        "file": "6156.png",
+        "floor": "1"
+      },
+      {
+        "room": "6157",
+        "file": "6157.png",
+        "floor": "1"
+      },
+      {
+        "room": "6158",
+        "file": "6158.png",
+        "floor": "1"
+      },
+      {
+        "room": "6159",
+        "file": "6159.png",
+        "floor": "1"
+      },
+      {
+        "room": "6160",
+        "file": "6160.png",
+        "floor": "1"
+      },
+      {
+        "room": "6161",
+        "file": "6161.png",
+        "floor": "1"
+      },
+      {
+        "room": "6162",
+        "file": "6162.png",
+        "floor": "1"
+      },
+      {
+        "room": "6197",
+        "file": "6197.png",
+        "floor": "1"
+      },
+      {
+        "room": "6198",
+        "file": "6198.png",
+        "floor": "1"
+      },
+      {
+        "room": "6199",
+        "file": "6199.png",
+        "floor": "1"
+      },
+      {
+        "room": "6201",
+        "file": "6201.png",
+        "floor": "2"
+      },
+      {
+        "room": "6202",
+        "file": "6202.png",
+        "floor": "2"
+      },
+      {
+        "room": "6203",
+        "file": "6203.png",
+        "floor": "2"
+      },
+      {
+        "room": "6204",
+        "file": "6204.png",
+        "floor": "2"
+      },
+      {
+        "room": "6205",
+        "file": "6205.png",
+        "floor": "2"
+      },
+      {
+        "room": "6206",
+        "file": "6206.png",
+        "floor": "2"
+      },
+      {
+        "room": "6207",
+        "file": "6207.png",
+        "floor": "2"
+      },
+      {
+        "room": "6208",
+        "file": "6208.png",
+        "floor": "2"
+      },
+      {
+        "room": "6209",
+        "file": "6209.png",
+        "floor": "2"
+      },
+      {
+        "room": "6210",
+        "file": "6210.png",
+        "floor": "2"
+      },
+      {
+        "room": "6211",
+        "file": "6211.png",
+        "floor": "2"
+      },
+      {
+        "room": "6212",
+        "file": "6212.png",
+        "floor": "2"
+      },
+      {
+        "room": "6213",
+        "file": "6213.png",
+        "floor": "2"
+      },
+      {
+        "room": "6214",
+        "file": "6214.png",
+        "floor": "2"
+      },
+      {
+        "room": "6215",
+        "file": "6215.png",
+        "floor": "2"
+      },
+      {
+        "room": "6216",
+        "file": "6216.png",
+        "floor": "2"
+      },
+      {
+        "room": "6217",
+        "file": "6217.png",
+        "floor": "2"
+      },
+      {
+        "room": "6218",
+        "file": "6218.png",
+        "floor": "2"
+      },
+      {
+        "room": "6219",
+        "file": "6219.png",
+        "floor": "2"
+      },
+      {
+        "room": "6220",
+        "file": "6220.png",
+        "floor": "2"
+      },
+      {
+        "room": "6221",
+        "file": "6221.png",
+        "floor": "2"
+      },
+      {
+        "room": "6222",
+        "file": "6222.png",
+        "floor": "2"
+      },
+      {
+        "room": "6223",
+        "file": "6223.png",
+        "floor": "2"
+      },
+      {
+        "room": "6224",
+        "file": "6224.png",
+        "floor": "2"
+      },
+      {
+        "room": "6225",
+        "file": "6225.png",
+        "floor": "2"
+      },
+      {
+        "room": "6226",
+        "file": "6226.png",
+        "floor": "2"
+      },
+      {
+        "room": "6227",
+        "file": "6227.png",
+        "floor": "2"
+      },
+      {
+        "room": "6228",
+        "file": "6228.png",
+        "floor": "2"
+      },
+      {
+        "room": "6229",
+        "file": "6229.png",
+        "floor": "2"
+      },
+      {
+        "room": "6230",
+        "file": "6230.png",
+        "floor": "2"
+      },
+      {
+        "room": "6231",
+        "file": "6231.png",
+        "floor": "2"
+      },
+      {
+        "room": "6232",
+        "file": "6232.png",
+        "floor": "2"
+      },
+      {
+        "room": "6233",
+        "file": "6233.png",
+        "floor": "2"
+      },
+      {
+        "room": "6234",
+        "file": "6234.png",
+        "floor": "2"
+      },
+      {
+        "room": "6235",
+        "file": "6235.png",
+        "floor": "2"
+      },
+      {
+        "room": "6236",
+        "file": "6236.png",
+        "floor": "2"
+      },
+      {
+        "room": "6237",
+        "file": "6237.png",
+        "floor": "2"
+      },
+      {
+        "room": "6239",
+        "file": "6239.png",
+        "floor": "2"
+      },
+      {
+        "room": "6240",
+        "file": "6240.png",
+        "floor": "2"
+      },
+      {
+        "room": "6241",
+        "file": "6241.png",
+        "floor": "2"
+      },
+      {
+        "room": "6243",
+        "file": "6243.png",
+        "floor": "2"
+      },
+      {
+        "room": "6244",
+        "file": "6244.png",
+        "floor": "2"
+      },
+      {
+        "room": "6245",
+        "file": "6245.png",
+        "floor": "2"
+      },
+      {
+        "room": "6246",
+        "file": "6246.png",
+        "floor": "2"
+      },
+      {
+        "room": "6247",
+        "file": "6247.png",
+        "floor": "2"
+      },
+      {
+        "room": "6248",
+        "file": "6248.png",
+        "floor": "2"
+      },
+      {
+        "room": "6249",
+        "file": "6249.png",
+        "floor": "2"
+      },
+      {
+        "room": "6250",
+        "file": "6250.png",
+        "floor": "2"
+      },
+      {
+        "room": "6251",
+        "file": "6251.png",
+        "floor": "2"
+      },
+      {
+        "room": "6252",
+        "file": "6252.png",
+        "floor": "2"
+      },
+      {
+        "room": "6253",
+        "file": "6253.png",
+        "floor": "2"
+      },
+      {
+        "room": "6254",
+        "file": "6254.png",
+        "floor": "2"
+      },
+      {
+        "room": "6255",
+        "file": "6255.png",
+        "floor": "2"
+      },
+      {
+        "room": "6256",
+        "file": "6256.png",
+        "floor": "2"
+      },
+      {
+        "room": "6257",
+        "file": "6257.png",
+        "floor": "2"
+      },
+      {
+        "room": "6258",
+        "file": "6258.png",
+        "floor": "2"
+      },
+      {
+        "room": "6259",
+        "file": "6259.png",
+        "floor": "2"
+      },
+      {
+        "room": "6260",
+        "file": "6260.png",
+        "floor": "2"
+      },
+      {
+        "room": "6261",
+        "file": "6261.png",
+        "floor": "2"
+      },
+      {
+        "room": "6262",
+        "file": "6262.png",
+        "floor": "2"
+      },
+      {
+        "room": "6263",
+        "file": "6263.png",
+        "floor": "2"
+      },
+      {
+        "room": "6264",
+        "file": "6264.png",
+        "floor": "2"
+      },
+      {
+        "room": "6265",
+        "file": "6265.png",
+        "floor": "2"
+      },
+      {
+        "room": "6266",
+        "file": "6266.png",
+        "floor": "2"
+      },
+      {
+        "room": "6267",
+        "file": "6267.png",
+        "floor": "2"
+      },
+      {
+        "room": "6268",
+        "file": "6268.png",
+        "floor": "2"
+      },
+      {
+        "room": "6269",
+        "file": "6269.png",
+        "floor": "2"
+      },
+      {
+        "room": "6270",
+        "file": "6270.png",
+        "floor": "2"
+      },
+      {
+        "room": "6300",
+        "file": "6300.png",
+        "floor": "3"
+      },
+      {
+        "room": "6301",
+        "file": "6301.png",
+        "floor": "3"
+      },
+      {
+        "room": "6302",
+        "file": "6302.png",
+        "floor": "3"
+      },
+      {
+        "room": "6303",
+        "file": "6303.png",
+        "floor": "3"
+      },
+      {
+        "room": "6304",
+        "file": "6304.png",
+        "floor": "3"
+      },
+      {
+        "room": "6305",
+        "file": "6305.png",
+        "floor": "3"
+      },
+      {
+        "room": "6306",
+        "file": "6306.png",
+        "floor": "3"
+      },
+      {
+        "room": "6307",
+        "file": "6307.png",
+        "floor": "3"
+      },
+      {
+        "room": "6308",
+        "file": "6308.png",
+        "floor": "3"
+      },
+      {
+        "room": "6309",
+        "file": "6309.png",
+        "floor": "3"
+      },
+      {
+        "room": "6310",
+        "file": "6310.png",
+        "floor": "3"
+      },
+      {
+        "room": "6311",
+        "file": "6311.png",
+        "floor": "3"
+      },
+      {
+        "room": "6312",
+        "file": "6312.png",
+        "floor": "3"
+      },
+      {
+        "room": "6313",
+        "file": "6313.png",
+        "floor": "3"
+      },
+      {
+        "room": "6314",
+        "file": "6314.png",
+        "floor": "3"
+      },
+      {
+        "room": "6315",
+        "file": "6315.png",
+        "floor": "3"
+      },
+      {
+        "room": "6317",
+        "file": "6317.png",
+        "floor": "3"
+      },
+      {
+        "room": "6319",
+        "file": "6319.png",
+        "floor": "3"
+      },
+      {
+        "room": "6320",
+        "file": "6320.png",
+        "floor": "3"
+      },
+      {
+        "room": "6321",
+        "file": "6321.png",
+        "floor": "3"
+      },
+      {
+        "room": "6322",
+        "file": "6322.png",
+        "floor": "3"
+      },
+      {
+        "room": "6323",
+        "file": "6323.png",
+        "floor": "3"
+      },
+      {
+        "room": "6325",
+        "file": "6325.png",
+        "floor": "3"
+      },
+      {
+        "room": "6326",
+        "file": "6326.png",
+        "floor": "3"
+      },
+      {
+        "room": "6327",
+        "file": "6327.png",
+        "floor": "3"
+      },
+      {
+        "room": "6331",
+        "file": "6331.png",
+        "floor": "3"
+      },
+      {
+        "room": "6332",
+        "file": "6332.png",
+        "floor": "3"
+      },
+      {
+        "room": "6333",
+        "file": "6333.png",
+        "floor": "3"
+      },
+      {
+        "room": "6334",
+        "file": "6334.png",
+        "floor": "3"
+      },
+      {
+        "room": "6335",
+        "file": "6335.png",
+        "floor": "3"
+      },
+      {
+        "room": "6336",
+        "file": "6336.png",
+        "floor": "3"
+      },
+      {
+        "room": "6337",
+        "file": "6337.png",
+        "floor": "3"
+      },
+      {
+        "room": "6338",
+        "file": "6338.png",
+        "floor": "3"
+      },
+      {
+        "room": "6339",
+        "file": "6339.png",
+        "floor": "3"
+      },
+      {
+        "room": "6340",
+        "file": "6340.png",
+        "floor": "3"
+      },
+      {
+        "room": "6341",
+        "file": "6341.png",
+        "floor": "3"
+      },
+      {
+        "room": "6342",
+        "file": "6342.png",
+        "floor": "3"
+      },
+      {
+        "room": "6343",
+        "file": "6343.png",
+        "floor": "3"
+      },
+      {
+        "room": "6344",
+        "file": "6344.png",
+        "floor": "3"
+      },
+      {
+        "room": "6345",
+        "file": "6345.png",
+        "floor": "3"
+      },
+      {
+        "room": "6346",
+        "file": "6346.png",
+        "floor": "3"
+      },
+      {
+        "room": "6347",
+        "file": "6347.png",
+        "floor": "3"
+      },
+      {
+        "room": "6348",
+        "file": "6348.png",
+        "floor": "3"
+      },
+      {
+        "room": "6349",
+        "file": "6349.png",
+        "floor": "3"
+      },
+      {
+        "room": "6350",
+        "file": "6350.png",
+        "floor": "3"
+      },
+      {
+        "room": "6351",
+        "file": "6351.png",
+        "floor": "3"
+      },
+      {
+        "room": "6352",
+        "file": "6352.png",
+        "floor": "3"
+      },
+      {
+        "room": "6353",
+        "file": "6353.png",
+        "floor": "3"
+      },
+      {
+        "room": "6354",
+        "file": "6354.png",
+        "floor": "3"
+      },
+      {
+        "room": "6355",
+        "file": "6355.png",
+        "floor": "3"
+      },
+      {
+        "room": "6401",
+        "file": "6401.png",
+        "floor": "4"
+      },
+      {
+        "room": "6402",
+        "file": "6402.png",
+        "floor": "4"
+      },
+      {
+        "room": "6403",
+        "file": "6403.png",
+        "floor": "4"
+      },
+      {
+        "room": "6404",
+        "file": "6404.png",
+        "floor": "4"
+      },
+      {
+        "room": "6405",
+        "file": "6405.png",
+        "floor": "4"
+      },
+      {
+        "room": "6406",
+        "file": "6406.png",
+        "floor": "4"
+      },
+      {
+        "room": "6407",
+        "file": "6407.png",
+        "floor": "4"
+      },
+      {
+        "room": "6408",
+        "file": "6408.png",
+        "floor": "4"
+      },
+      {
+        "room": "6409",
+        "file": "6409.png",
+        "floor": "4"
+      },
+      {
+        "room": "6410",
+        "file": "6410.png",
+        "floor": "4"
+      },
+      {
+        "room": "6411",
+        "file": "6411.png",
+        "floor": "4"
+      },
+      {
+        "room": "6412",
+        "file": "6412.png",
+        "floor": "4"
+      },
+      {
+        "room": "6413",
+        "file": "6413.png",
+        "floor": "4"
+      },
+      {
+        "room": "6414",
+        "file": "6414.png",
+        "floor": "4"
+      },
+      {
+        "room": "6415",
+        "file": "6415.png",
+        "floor": "4"
+      },
+      {
+        "room": "6416",
+        "file": "6416.png",
+        "floor": "4"
+      },
+      {
+        "room": "6417",
+        "file": "6417.png",
+        "floor": "4"
+      },
+      {
+        "room": "6418",
+        "file": "6418.png",
+        "floor": "4"
+      },
+      {
+        "room": "6419",
+        "file": "6419.png",
+        "floor": "4"
+      },
+      {
+        "room": "6421",
+        "file": "6421.png",
+        "floor": "4"
+      },
+      {
+        "room": "6425",
+        "file": "6425.png",
+        "floor": "4"
+      },
+      {
+        "room": "6426",
+        "file": "6426.png",
+        "floor": "4"
+      },
+      {
+        "room": "6427",
+        "file": "6427.png",
+        "floor": "4"
+      },
+      {
+        "room": "6429",
+        "file": "6429.png",
+        "floor": "4"
+      },
+      {
+        "room": "6431",
+        "file": "6431.png",
+        "floor": "4"
+      },
+      {
+        "room": "6433",
+        "file": "6433.png",
+        "floor": "4"
+      },
+      {
+        "room": "6434",
+        "file": "6434.png",
+        "floor": "4"
+      },
+      {
+        "room": "6435",
+        "file": "6435.png",
+        "floor": "4"
+      },
+      {
+        "room": "6437",
+        "file": "6437.png",
+        "floor": "4"
+      },
+      {
+        "room": "6438",
+        "file": "6438.png",
+        "floor": "4"
+      },
+      {
+        "room": "6439",
+        "file": "6439.png",
+        "floor": "4"
+      },
+      {
+        "room": "6440",
+        "file": "6440.png",
+        "floor": "4"
+      },
+      {
+        "room": "6441",
+        "file": "6441.png",
+        "floor": "4"
+      },
+      {
+        "room": "6442",
+        "file": "6442.png",
+        "floor": "4"
+      },
+      {
+        "room": "6443",
+        "file": "6443.png",
+        "floor": "4"
+      },
+      {
+        "room": "6445",
+        "file": "6445.png",
+        "floor": "4"
+      },
+      {
+        "room": "6446",
+        "file": "6446.png",
+        "floor": "4"
+      },
+      {
+        "room": "6447",
+        "file": "6447.png",
+        "floor": "4"
+      },
+      {
+        "room": "6448",
+        "file": "6448.png",
+        "floor": "4"
+      },
+      {
+        "room": "6449",
+        "file": "6449.png",
+        "floor": "4"
+      },
+      {
+        "room": "6450",
+        "file": "6450.png",
+        "floor": "4"
+      },
+      {
+        "room": "6451",
+        "file": "6451.png",
+        "floor": "4"
+      },
+      {
+        "room": "6452",
+        "file": "6452.png",
+        "floor": "4"
+      },
+      {
+        "room": "6453",
+        "file": "6453.png",
+        "floor": "4"
+      },
+      {
+        "room": "6454",
+        "file": "6454.png",
+        "floor": "4"
+      },
+      {
+        "room": "6455",
+        "file": "6455.png",
+        "floor": "4"
+      },
+      {
+        "room": "6456",
+        "file": "6456.png",
+        "floor": "4"
+      },
+      {
+        "room": "6457",
+        "file": "6457.png",
+        "floor": "4"
+      },
+      {
+        "room": "6458",
+        "file": "6458.png",
+        "floor": "4"
+      },
+      {
+        "room": "6459",
+        "file": "6459.png",
+        "floor": "4"
+      },
+      {
+        "room": "6460",
+        "file": "6460.png",
+        "floor": "4"
+      },
+      {
+        "room": "6461",
+        "file": "6461.png",
+        "floor": "4"
+      },
+      {
+        "room": "6462",
+        "file": "6462.png",
+        "floor": "4"
+      },
+      {
+        "room": "6463",
+        "file": "6463.png",
+        "floor": "4"
+      },
+      {
+        "room": "6464",
+        "file": "6464.png",
+        "floor": "4"
+      },
+      {
+        "room": "6465",
+        "file": "6465.png",
+        "floor": "4"
+      },
+      {
+        "room": "6501",
+        "file": "6501.png",
+        "floor": "5"
+      },
+      {
+        "room": "6502",
+        "file": "6502.png",
+        "floor": "5"
+      },
+      {
+        "room": "6503",
+        "file": "6503.png",
+        "floor": "5"
+      },
+      {
+        "room": "6504",
+        "file": "6504.png",
+        "floor": "5"
+      },
+      {
+        "room": "6505",
+        "file": "6505.png",
+        "floor": "5"
+      },
+      {
+        "room": "6506",
+        "file": "6506.png",
+        "floor": "5"
+      },
+      {
+        "room": "6509",
+        "file": "6509.png",
+        "floor": "5"
+      },
+      {
+        "room": "6510",
+        "file": "6510.png",
+        "floor": "5"
+      },
+      {
+        "room": "6511",
+        "file": "6511.png",
+        "floor": "5"
+      },
+      {
+        "room": "6512",
+        "file": "6512.png",
+        "floor": "5"
+      },
+      {
+        "room": "6513",
+        "file": "6513.png",
+        "floor": "5"
+      },
+      {
+        "room": "6515",
+        "file": "6515.png",
+        "floor": "5"
+      },
+      {
+        "room": "6516",
+        "file": "6516.png",
+        "floor": "5"
+      },
+      {
+        "room": "6517",
+        "file": "6517.png",
+        "floor": "5"
+      },
+      {
+        "room": "6518",
+        "file": "6518.png",
+        "floor": "5"
+      },
+      {
+        "room": "6519",
+        "file": "6519.png",
+        "floor": "5"
+      },
+      {
+        "room": "6520",
+        "file": "6520.png",
+        "floor": "5"
+      },
+      {
+        "room": "6521",
+        "file": "6521.png",
+        "floor": "5"
+      },
+      {
+        "room": "6523",
+        "file": "6523.png",
+        "floor": "5"
+      },
+      {
+        "room": "6525",
+        "file": "6525.png",
+        "floor": "5"
+      },
+      {
+        "room": "6526",
+        "file": "6526.png",
+        "floor": "5"
+      },
+      {
+        "room": "6527",
+        "file": "6527.png",
+        "floor": "5"
+      },
+      {
+        "room": "6529",
+        "file": "6529.png",
+        "floor": "5"
+      },
+      {
+        "room": "6531",
+        "file": "6531.png",
+        "floor": "5"
+      },
+      {
+        "room": "6533",
+        "file": "6533.png",
+        "floor": "5"
+      },
+      {
+        "room": "6535",
+        "file": "6535.png",
+        "floor": "5"
+      },
+      {
+        "room": "6537",
+        "file": "6537.png",
+        "floor": "5"
+      },
+      {
+        "room": "6540",
+        "file": "6540.png",
+        "floor": "5"
+      },
+      {
+        "room": "6541",
+        "file": "6541.png",
+        "floor": "5"
+      },
+      {
+        "room": "6542",
+        "file": "6542.png",
+        "floor": "5"
+      },
+      {
+        "room": "6543",
+        "file": "6543.png",
+        "floor": "5"
+      },
+      {
+        "room": "6544",
+        "file": "6544.png",
+        "floor": "5"
+      },
+      {
+        "room": "6545",
+        "file": "6545.png",
+        "floor": "5"
+      },
+      {
+        "room": "6546",
+        "file": "6546.png",
+        "floor": "5"
+      },
+      {
+        "room": "6547",
+        "file": "6547.png",
+        "floor": "5"
+      },
+      {
+        "room": "6548",
+        "file": "6548.png",
+        "floor": "5"
+      },
+      {
+        "room": "6549",
+        "file": "6549.png",
+        "floor": "5"
+      },
+      {
+        "room": "6550",
+        "file": "6550.png",
+        "floor": "5"
+      },
+      {
+        "room": "6551",
+        "file": "6551.png",
+        "floor": "5"
+      },
+      {
+        "room": "6553",
+        "file": "6553.png",
+        "floor": "5"
+      },
+      {
+        "room": "6554",
+        "file": "6554.png",
+        "floor": "5"
+      },
+      {
+        "room": "6555",
+        "file": "6555.png",
+        "floor": "5"
+      },
+      {
+        "room": "6556",
+        "file": "6556.png",
+        "floor": "5"
+      },
+      {
+        "room": "6557",
+        "file": "6557.png",
+        "floor": "5"
+      },
+      {
+        "room": "6559",
+        "file": "6559.png",
+        "floor": "5"
+      }
+    ]
+  }
+}

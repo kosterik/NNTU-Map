@@ -1,0 +1,10 @@
+[
+  { "number": 1, "start": "08:00", "end": "09:35", "label": "1 пара" },
+  { "number": 2, "start": "09:45", "end": "11:20", "label": "2 пара" },
+  { "number": 3, "start": "11:35", "end": "13:10", "label": "3 пара" },
+  { "number": 4, "start": "13:40", "end": "15:15", "label": "4 пара" },
+  { "number": 5, "start": "15:25", "end": "17:00", "label": "5 пара" },
+  { "number": 6, "start": "17:10", "end": "18:45", "label": "6 пара" },
+  { "number": 7, "start": "18:55", "end": "20:30", "label": "7 пара" },
+  { "number": 8, "start": "20:40", "end": "22:15", "label": "8 пара" }
+]

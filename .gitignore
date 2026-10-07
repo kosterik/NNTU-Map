@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+
+# C extensions
+*.so
+
+# Build directories & intermediate outputs
+build/
+dist/
+android/build_tmp/
+*.spec.bak
+
+# Local user profile & cache
+.app_profile/
+*.log
+.vscode/
+.idea/
+
+# Large third-party dumps & scratch files
+extracted_data/
+scratch/
+com.vvadev.nntu_map.apk
+NNTU+Map_1.1.2_apkcombo.com.xapk
+*.idsig
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>NNTU Map & Schedule — Карта корпусов и расписание НГТУ</title>
+  <meta name="description" content="Кроссплатформенное приложение карты корпусов, навигации по аудиториям и расписания НГТУ им. Р.Е. Алексеева. Создатель kosterik.">
+  <link rel="icon" type="image/png" href="/app_assets/icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ================= App Header ================= -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand-wrapper">
+        <img src="/app_assets/icon.png" alt="NNTU Map Logo" class="brand-logo-img" id="header-app-logo">
+        <div class="brand-title">
+          <span>NNTU</span>
+          <span class="slash">/</span>
+          <span>Map & Schedule</span>
+        </div>
+        <div class="author-badge" title="Автор проекта">
+          <span class="octicon-star">★</span>
+          <span>создатель: <span id="header-author-name">kosterik</span></span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="quick-status-chip">
+          <div class="status-dot"></div>
+          <span>НГТУ Онлайн</span>
+        </div>
+        <div class="user-mini-avatar" id="header-mini-avatar" title="Профиль приложения" onclick="document.getElementById('tab-btn-profile').click()">
+          👤
+        </div>
+      </div>
+    </div>
+
+    <!-- GitHub Underline Navigation -->
+    <nav class="underline-nav">
+      <button class="nav-tab active" data-tab="home" id="tab-btn-home">
+        <span>📖 Главная</span>
+      </button>
+      <button class="nav-tab" data-tab="schedule" id="tab-btn-schedule">
+        <span>📅 Расписание</span>
+        <span class="counter" id="schedule-counter">Сегодня</span>
+      </button>
+      <button class="nav-tab" data-tab="map" id="tab-btn-map">
+        <span>🗺️ Карта корпусов</span>
+        <span class="counter">797 ауд.</span>
+      </button>
+      <button class="nav-tab" data-tab="widgets" id="tab-btn-widgets">
+        <span>📱 Виджеты</span>
+      </button>
+      <button class="nav-tab" data-tab="profile" id="tab-btn-profile">
+        <span>⚙️ Профиль и Настройки</span>
+      </button>
+      <button class="nav-tab" data-tab="author" id="tab-btn-author">
+        <span>👨‍💻 Автор</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ================= Main Container ================= -->
+  <main class="app-container">
+
+    <!-- TAB 1: HOME (ОБЗОР / ГЛАВНАЯ) -->
+    <section class="tab-pane active" id="tab-home">
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-info">
+          <h1>
+            <span>Карта корпусов и навигатор НГТУ</span>
+          </h1>
+          <p>
+            Умная навигация по 6 учебным корпусам НГТУ им. Р.Е. Алексеева, актуальное расписание пар, облачный профиль студента и виджеты для рабочего стола.
+          </p>
+          <div class="hero-stats-row">
+            <div class="hero-stat-card">
+              <span>🏛️ Корпусов:</span>
+              <span class="hero-stat-number">6</span>
+            </div>
+            <div class="hero-stat-card">
+              <span>📍 Маршрутов аудиторий:</span>
+              <span class="hero-stat-number">797</span>
+            </div>
+            <div class="hero-stat-card">
+              <span>⏰ Звонки пар:</span>
+              <span class="hero-stat-number">08:00 – 22:15</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-gh btn-primary-gh" onclick="document.getElementById('tab-btn-map').click()">
+            🗺️ Открыть карту
+          </button>
+          <button class="btn-gh" onclick="document.getElementById('tab-btn-schedule').click()">
+            📅 Расписание
+          </button>
+        </div>
+      </div>
+
+      <!-- News Section from nntu.ru -->
+      <div class="gh-box">
+        <div class="gh-box-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>📰 Актуальные новости НГТУ им. Р.Е. Алексеева</span>
+            <span style="font-size: 11px; color: var(--color-fg-muted); font-weight: normal;">(https://www.nntu.ru/news/all/vse-novosti)</span>
+          </div>
+          <a href="https://www.nntu.ru/news/all/vse-novosti" target="_blank" rel="noopener" class="btn-gh" style="font-size: 11px; padding: 3px 8px;">
+            Все новости ↗
+          </a>
+        </div>
+        <div class="gh-box-body">
+          <div class="news-grid" id="nntu-news-container">
+            <!-- News loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: SCHEDULE (РАСПИСАНИЕ) -->
+    <section class="tab-pane" id="tab-schedule">
+      <!-- Schedule Top Bar -->
+      <div class="schedule-top-bar">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <!-- Group Badge Selector -->
+          <div class="group-info-pill" id="btn-open-group-modal" style="cursor: pointer;" title="Нажмите для открытия каталога всех групп НГТУ">
+            <span>Группа:</span>
+            <span class="group-name" id="schedule-group-label">26-ИВТ-4-1</span>
+            <span style="font-size: 11px; color: var(--color-fg-muted);">▼</span>
+          </div>
+
+          <!-- Quick Group Search Input (Matching https://www.nntu.ru/content/studentam/raspisanie_zanyatiy) -->
+          <div class="schedule-quick-search-box">
+            <input type="text" class="gh-input" id="schedule-quick-group-input" placeholder="Поиск группы (напр. 26-ИВТ-4-1)..." autocomplete="off" style="height: 32px; padding: 4px 10px; font-size: 12px;">
+            <div class="autocomplete-dropdown" id="schedule-quick-group-dropdown"></div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <!-- Subgroup Toggle Group -->
+          <div class="subgroup-toggle-group" id="schedule-subgroup-toggle-container" title="Фильтр пар по учебной подгруппе">
+            <span style="font-size: 11px; color: var(--color-fg-muted); padding: 0 6px; font-weight: 600;">👥 Подгруппа:</span>
+            <button type="button" class="subgroup-btn active" data-subgroup="profile" id="btn-subgroup-profile" title="Фильтровать пары по подгруппам предметов из вашего профиля">Мой профиль</button>
+            <button type="button" class="subgroup-btn" data-subgroup="all" id="btn-subgroup-all" title="Показывать все пары без фильтрации">Все</button>
+            <button type="button" class="subgroup-btn" data-subgroup="1" id="btn-subgroup-1">1 п/г</button>
+            <button type="button" class="subgroup-btn" data-subgroup="2" id="btn-subgroup-2">2 п/г</button>
+          </div>
+
+          <!-- Parity & Week Toggles -->
+          <div class="week-toggle-group" id="schedule-week-toggle-container">
+            <button type="button" class="week-btn active" id="btn-week-numerator">6 неделя (Чётная)</button>
+            <button type="button" class="week-btn" id="btn-week-denominator">7 неделя (Нечётная)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Days Bar -->
+      <div class="days-segmented-bar" id="schedule-days-bar">
+        <div class="day-chip active" data-day="1" id="day-chip-1">
+          <div class="day-chip-name">Понедельник</div>
+          <div class="day-chip-date" id="day-chip-date-1">5 окт</div>
+        </div>
+        <div class="day-chip" data-day="2" id="day-chip-2">
+          <div class="day-chip-name">Вторник</div>
+          <div class="day-chip-date" id="day-chip-date-2">6 окт</div>
+        </div>
+        <div class="day-chip" data-day="3" id="day-chip-3">
+          <div class="day-chip-name">Среда</div>
+          <div class="day-chip-date" id="day-chip-date-3">7 окт</div>
+        </div>
+        <div class="day-chip" data-day="4" id="day-chip-4">
+          <div class="day-chip-name">Четверг</div>
+          <div class="day-chip-date" id="day-chip-date-4">8 окт</div>
+        </div>
+        <div class="day-chip" data-day="5" id="day-chip-5">
+          <div class="day-chip-name">Пятница</div>
+          <div class="day-chip-date" id="day-chip-date-5">9 окт</div>
+        </div>
+        <div class="day-chip" data-day="6" id="day-chip-6">
+          <div class="day-chip-name">Суббота</div>
+          <div class="day-chip-date" id="day-chip-date-6">10 окт</div>
+        </div>
+      </div>
+
+      <!-- Timetable List -->
+      <div class="timetable-list" id="timetable-list-container">
+        <!-- Lessons rendered dynamically here -->
+      </div>
+    </section>
+
+    <!-- TAB 3: MAP & NAVIGATION (КАРТА КОРПУСОВ) -->
+    <section class="tab-pane" id="tab-map">
+      <div class="map-view-layout">
+        <!-- Left Controls Panel -->
+        <div class="map-control-panel">
+          <h2 style="font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+            <span>🧭 Навигатор по корпусам</span>
+          </h2>
+
+          <!-- Building Selector -->
+          <div class="control-group">
+            <label class="control-label" for="map-building-select">Учебный корпус</label>
+            <select class="gh-select" id="map-building-select">
+              <option value="1">1 Корпус (ул. Минина, 24)</option>
+              <option value="2">2 Корпус (ул. Минина, 24к2)</option>
+              <option value="3">3 Корпус (ул. Минина, 28Б)</option>
+              <option value="4">4 Корпус (ул. Минина, 28В)</option>
+              <option value="5">5 Корпус (ул. Минина, 28Л)</option>
+              <option value="6" selected>6 Корпус (Казанское шоссе, 12)</option>
+            </select>
+          </div>
+
+          <!-- Floor Selector -->
+          <div class="control-group">
+            <label class="control-label">Этаж здания</label>
+            <div class="floor-selector" id="map-floor-chips">
+              <!-- Floor chips generated dynamically -->
+            </div>
+          </div>
+
+          <!-- Room Search Autocomplete -->
+          <div class="control-group">
+            <label class="control-label" for="room-search-input">Поиск аудитории</label>
+            <div class="autocomplete-container">
+              <input type="text" class="gh-input" id="room-search-input" placeholder="Введите номер (напр. 6410, 6125, 1105)..." autocomplete="off">
+              <div class="autocomplete-dropdown" id="room-autocomplete-list"></div>
+            </div>
+          </div>
+
+          <!-- Active Route Info Card -->
+          <div class="active-route-info" id="active-route-info-card" style="display: none;">
+            <div class="active-route-title" id="active-route-title">Маршрут проложен</div>
+            <div class="active-route-desc" id="active-route-desc"></div>
+            <button class="btn-gh" id="btn-clear-route" style="margin-top: 8px; font-size: 11px; padding: 3px 8px;">
+              ✕ Сбросить маршрут
+            </button>
+          </div>
+
+          <div style="margin-top: 20px; font-size: 12px; color: var(--color-fg-muted); line-height: 1.5; border-top: 1px solid var(--color-border-muted); padding-top: 12px;">
+            💡 <strong>Совет:</strong> Кликните по любой аудитории в расписании занятий — карта сразу откроет нужный корпус и проложит путь.
+          </div>
+        </div>
+
+        <!-- Right Map Viewer Box -->
+        <div class="gh-box" id="map-canvas-box" style="margin-bottom: 0;">
+          <div class="gh-box-header">
+            <span>🗺️ Интерактивный план этажа с навигацией</span>
+            <span style="font-size: 11px; color: var(--color-fg-muted);">Управление: колесо мыши / жесты масштабирования</span>
+          </div>
+
+          <div class="map-canvas-container">
+            <div class="map-viewport" id="map-viewport">
+              <img id="map-img-layer" class="map-img-layer" src="/app_assets/maps/6/1level%20non-active.png" alt="Карта корпуса">
+            </div>
+
+            <!-- HUD Controls -->
+            <div class="map-hud-controls">
+              <button class="hud-btn" id="hud-zoom-in" title="Приблизить">+</button>
+              <button class="hud-btn" id="hud-zoom-out" title="Отдалить">−</button>
+              <button class="hud-btn" id="hud-zoom-reset" title="Сбросить масштаб">⟲</button>
+              <button class="hud-btn" id="hud-fullscreen" title="На весь экран">⛶</button>
+            </div>
+
+            <!-- HUD Legend -->
+            <div class="map-hud-legend">
+              <div class="legend-item">
+                <div class="legend-color-dot" style="background: var(--color-success-fg);"></div>
+                <span>Маршрут</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color-dot" style="background: var(--color-accent-fg);"></div>
+                <span>Лестницы и переходы</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color-dot" style="background: var(--color-attention-fg);"></div>
+                <span>Кабинеты</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: WIDGETS (ВИДЖЕТЫ) -->
+    <section class="tab-pane" id="tab-widgets">
+      <div class="gh-box">
+        <div class="gh-box-header">
+          <span>📱 Виджеты расписания (Android и Windows)</span>
+          <button class="btn-gh btn-accent-gh" id="btn-launch-desktop-widget" style="font-size: 12px;">
+            🪟 Открыть мини-виджет Windows
+          </button>
+        </div>
+        <div class="gh-box-body">
+          <p style="color: var(--color-fg-muted); font-size: 13px; margin-bottom: 20px;">
+            Интерактивный предпросмотр виджетов для домашнего экрана смартфона и рабочего стола Windows. Виджеты обновляются автоматически при синхронизации расписания.
+          </p>
+
+          <div class="widgets-showcase">
+            <!-- Widget 1: Tomorrow -->
+            <div>
+              <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">1. Виджет «Пары на завтра» (2x2)</div>
+              <div class="widget-frame">
+                <div class="widget-frame-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="/app_assets/icon.png" style="width: 20px; height: 20px; border-radius: 4px;">
+                    <span style="font-size: 13px; font-weight: 700;" id="widget-tomorrow-day-title">Завтра</span>
+                  </div>
+                  <span class="widget-pill">НГТУ</span>
+                </div>
+                <div id="widget-tomorrow-content"></div>
+              </div>
+            </div>
+
+            <!-- Widget 2: Today + Tomorrow -->
+            <div>
+              <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">2. Виджет «Сегодня + Завтра» (4x2)</div>
+              <div class="widget-frame">
+                <div class="widget-frame-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="/app_assets/icon.png" style="width: 20px; height: 20px; border-radius: 4px;">
+                    <span style="font-size: 13px; font-weight: 700;">Обзор 2 дней</span>
+                  </div>
+                  <span class="widget-pill" id="widget-dual-group-pill" style="background: rgba(35,134,54,0.2); color: var(--color-success-fg);">26-ИВТ-4-1</span>
+                </div>
+
+                <div style="font-size: 11px; font-weight: 700; color: var(--color-accent-fg); margin-bottom: 6px;">СЕГОДНЯ:</div>
+                <div id="widget-dual-today-content" style="margin-bottom: 12px;"></div>
+
+                <div style="font-size: 11px; font-weight: 700; color: var(--color-fg-muted); margin-bottom: 6px;">ЗАВТРА:</div>
+                <div id="widget-dual-tomorrow-content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PROFILE & SETTINGS (ПРОФИЛЬ И НАСТРОЙКИ) -->
+    <section class="tab-pane" id="tab-profile">
+      <div class="settings-grid">
+        <!-- Section 1A: Guest Auth Card (Shown when NOT logged in) -->
+        <div class="gh-box" id="profile-guest-card">
+          <div class="gh-box-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>🔐 Вход и Регистрация</span>
+            </div>
+            <div id="cloud-status-badge-guest" class="cloud-sync-status-badge online" title="Google Firestore (kosterik-app)">
+              <span>☁️ Firebase: В сети 🟢</span>
+            </div>
+          </div>
+          <div class="gh-box-body" style="padding: 24px;">
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;" id="inline-auth-tabs">
+              <button type="button" class="btn-gh active auth-tab-btn" id="inline-tab-login" style="padding: 6px 16px; font-size: 13px;">🔑 Вход в аккаунт</button>
+              <button type="button" class="btn-gh auth-tab-btn" id="inline-tab-register" style="padding: 6px 16px; font-size: 13px;">📝 Регистрация</button>
+            </div>
+
+            <div id="inline-auth-alert" style="display:none; padding:10px 14px; border-radius:6px; font-size:12px; margin-bottom:16px;"></div>
+
+            <!-- Form: Login -->
+            <form id="inline-form-login">
+              <div class="control-group">
+                <label class="control-label" for="inline-login-username">Логин</label>
+                <input type="text" class="gh-input" id="inline-login-username" required placeholder="Введите логин" autocomplete="username">
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="inline-login-password">Пароль</label>
+                <div class="password-input-wrap">
+                  <input type="password" class="gh-input" id="inline-login-password" required placeholder="••••••••" autocomplete="current-password">
+                  <button type="button" class="btn-toggle-password" data-target="inline-login-password" title="Показать / скрыть пароль">👁️</button>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: var(--color-fg-muted); margin-bottom: 12px;">
+                ☁️ После входа загрузятся ваш профиль, аватарка и закрепленная учебная группа.
+              </div>
+              <div style="font-size: 11px; color: var(--color-fg-subtle); margin-bottom: 16px;">
+                Входя в аккаунт, вы подтверждаете согласие с <a href="javascript:void(0)" class="link-open-privacy-policy" style="color: var(--color-accent-fg); text-decoration: underline;">Политикой конфиденциальности</a>.
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <button type="button" class="btn-gh" id="btn-inline-to-register" style="font-size: 11px;">Нет аккаунта? Зарегистрироваться</button>
+                <button type="submit" class="btn-gh btn-primary-gh" id="btn-inline-submit-login">Войти в аккаунт</button>
+              </div>
+            </form>
+
+            <!-- Form: Register -->
+            <form id="inline-form-register" style="display: none;">
+              <div class="control-group">
+                <label class="control-label" for="inline-reg-username">Придумайте логин</label>
+                <input type="text" class="gh-input" id="inline-reg-username" required placeholder="например: ivan_ivanov" autocomplete="username">
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="inline-reg-password">Пароль</label>
+                <div class="password-input-wrap">
+                  <input type="password" class="gh-input" id="inline-reg-password" required placeholder="Минимум 4 символа" autocomplete="new-password">
+                  <button type="button" class="btn-toggle-password" data-target="inline-reg-password" title="Показать / скрыть пароль">👁️</button>
+                </div>
+              </div>
+              <div class="control-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="control-label" for="inline-reg-group" style="margin-bottom: 0;">📌 Ваша учебная группа (закрепится за профилем)</label>
+                  <button type="button" class="btn-gh" id="btn-inline-reg-open-modal" style="font-size: 11px; padding: 2px 8px;">📋 Полный каталог</button>
+                </div>
+                <input type="text" class="gh-input" id="inline-reg-group" required placeholder="Введите название группы (например: 24-ИС-1, 25-ИВТ...)" autocomplete="off">
+                
+                <div style="font-size: 11px; color: var(--color-fg-subtle); margin: 8px 0 4px 0;">Популярные группы институтов:</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;" id="inline-reg-chips">
+                  <button type="button" class="btn-gh inline-reg-chip" data-group="24-ИС-1">24-ИС-1</button>
+                  <button type="button" class="btn-gh inline-reg-chip" data-group="25-ИВТ-4-1">25-ИВТ-4-1</button>
+                  <button type="button" class="btn-gh inline-reg-chip" data-group="24-ПМ-1">24-ПМ-1</button>
+                  <button type="button" class="btn-gh inline-reg-chip" data-group="24-А">24-А</button>
+                  <button type="button" class="btn-gh inline-reg-chip" data-group="23-ЭЭС">23-ЭЭС</button>
+                  <button type="button" class="btn-gh inline-reg-chip" data-group="24-БД-1">24-БД-1</button>
+                </div>
+
+                <div id="inline-reg-group-list" style="max-height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--color-border-default); border-radius: 6px; padding: 6px; background: var(--color-canvas-subtle); margin-top: 4px; margin-bottom: 6px;">
+                  <!-- Live groups dynamically populated here with 'Выбрать →' -->
+                </div>
+
+                <p style="font-size: 11px; color: var(--color-fg-muted); margin-top: 4px;">
+                  Группа закрепится за вашим профилем в базе данных, и расписание будет всегда открываться для неё.
+                </p>
+              </div>
+
+              <!-- Privacy Policy Consent Checkbox -->
+              <div class="control-group privacy-consent-row" style="margin-top: 14px; margin-bottom: 14px; background: var(--color-canvas-inset); padding: 10px 12px; border-radius: 6px; border: 1px solid var(--color-border-muted);">
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 12px; color: var(--color-fg-default); user-select: none;">
+                  <input type="checkbox" id="inline-reg-privacy-checkbox" required style="margin-top: 2px; accent-color: var(--color-accent-fg); cursor: pointer;">
+                  <span>
+                    Я принимаю условия <a href="javascript:void(0)" class="link-open-privacy-policy" style="color: var(--color-accent-fg); text-decoration: underline; font-weight: 600;">Политики конфиденциальности</a> и согласен(сна) с тем, что администрация сервиса <strong>не несёт ответственности за возможную утечку данных</strong>.
+                  </span>
+                </label>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 18px;">
+                <button type="button" class="btn-gh" id="btn-inline-to-login" style="font-size: 11px;">Уже есть аккаунт? Войти</button>
+                <button type="submit" class="btn-gh btn-accent-gh" id="btn-inline-submit-register">Создать аккаунт</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Section 1B: Authenticated Profile Card (Shown ONLY when LOGGED IN) -->
+        <div class="gh-box" id="profile-user-card" style="display: none;">
+          <div class="gh-box-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>👤 Профиль студента: <strong id="profile-card-username-title"></strong></span>
+            </div>
+            <div id="cloud-status-badge" class="cloud-sync-status-badge online" title="Подключено к Google Firestore (проект: kosterik-app)">
+              <span>☁️ Firebase: В сети 🟢</span>
+            </div>
+          </div>
+          <div class="gh-box-body">
+            <div class="avatar-picker-row">
+              <div class="large-avatar-preview" id="profile-avatar-preview">?</div>
+              <div style="flex: 1;">
+                <label class="control-label" for="profile-nickname-input">Отображаемое имя / Никнейм</label>
+                <input type="text" class="gh-input" id="profile-nickname-input" placeholder="Введите имя...">
+                
+                <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                  <input type="file" id="avatar-file-input" accept="image/*" style="display: none;">
+                  <button type="button" class="btn-gh" id="btn-upload-avatar" style="font-size: 11px;">
+                    📁 Загрузить аватарку
+                  </button>
+                  <button type="button" class="btn-gh" id="btn-reset-avatar" style="font-size: 11px; color: var(--color-fg-muted);">
+                    Сбросить
+                  </button>
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <span style="font-size: 11px; color: var(--color-fg-subtle); display: block; margin-bottom: 6px;">Или выберите стиль:</span>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button type="button" class="btn-gh preset-avatar-chip" data-color="linear-gradient(135deg, #1f6feb, #238636)" data-icon="⚡" style="padding: 2px 8px; font-size: 12px;">⚡ Кибер</button>
+                    <button type="button" class="btn-gh preset-avatar-chip" data-color="linear-gradient(135deg, #8957e5, #da3633)" data-icon="🔥" style="padding: 2px 8px; font-size: 12px;">🔥 Пламя</button>
+                    <button type="button" class="btn-gh preset-avatar-chip" data-color="linear-gradient(135deg, #238636, #0969da)" data-icon="🎓" style="padding: 2px 8px; font-size: 12px;">🎓 Вуз</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pinned Group Selector in Profile -->
+            <div class="control-group" style="margin-top: 16px;">
+              <label class="control-label" for="profile-pinned-group-input">📌 Закрепленная учебная группа</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="gh-input" id="profile-pinned-group-input" placeholder="например: 26-ИВТ-4-1">
+                <button type="button" class="btn-gh btn-primary-gh" id="btn-save-pinned-group" style="white-space: nowrap;">Закрепить</button>
+              </div>
+              <p style="font-size: 12px; color: var(--color-fg-muted); margin-top: 6px;">
+                Закрепленная группа привязана к вашему аккаунту в облачной базе данных и всегда автоматически загружается при входе.
+              </p>
+            </div>
+
+            <!-- Subgroups by Subjects Section (1 to 10) -->
+            <div class="control-group" style="margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--color-border-muted);">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                <label class="control-label" style="margin-bottom: 0; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                  <span>👥 Подгруппы по предметам (1–10)</span>
+                  <span class="counter" id="configured-subgroups-count">0</span>
+                </label>
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn-gh" id="btn-detect-subjects" style="font-size: 11px; padding: 3px 8px;" title="Собрать предметы с подгруппами из вашего текущего расписания">
+                    🔍 Найти из расписания
+                  </button>
+                  <button type="button" class="btn-gh btn-accent-gh" id="btn-add-subject-row" style="font-size: 11px; padding: 3px 8px;">
+                    ➕ Добавить предмет
+                  </button>
+                </div>
+              </div>
+              <p style="font-size: 12px; color: var(--color-fg-muted); margin-bottom: 12px;">
+                Укажите вашу подгруппу (1–10) для каждого предмета (например, <em>Информатика — 2 подгруппа, Английский — 1 подгруппа, ГИТ — 3 подгруппа</em>). Пары других подгрупп автоматически убираются из расписания.
+              </p>
+
+              <!-- Default Fallback Subgroup -->
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; background: var(--color-canvas-subtle); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--color-border-default);">
+                <div>
+                  <div style="font-size: 12px; color: var(--color-fg-default); font-weight: 600;">Основная подгруппа по умолчанию:</div>
+                  <div style="font-size: 11px; color: var(--color-fg-subtle);">Для предметов, у которых не выбрана отдельная подгруппа</div>
+                </div>
+                <select class="gh-input" id="profile-default-subgroup-select" style="max-width: 170px; height: 32px; font-size: 12px;">
+                  <option value="all">Все подгруппы</option>
+                  <option value="1">1 подгруппа</option>
+                  <option value="2">2 подгруппа</option>
+                  <option value="3">3 подгруппа</option>
+                  <option value="4">4 подгруппа</option>
+                  <option value="5">5 подгруппа</option>
+                  <option value="6">6 подгруппа</option>
+                  <option value="7">7 подгруппа</option>
+                  <option value="8">8 подгруппа</option>
+                  <option value="9">9 подгруппа</option>
+                  <option value="10">10 подгруппа</option>
+                </select>
+              </div>
+
+              <!-- Container for per-subject rows -->
+              <div id="profile-subject-subgroups-list" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Dynamically populated subject rows -->
+              </div>
+
+              <!-- Add Subject Inline Box -->
+              <div id="add-subject-inline-box" style="display: none; margin-top: 10px; padding: 12px; background: var(--color-canvas-inset); border-radius: 6px; border: 1px dashed var(--color-border-default);">
+                <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Добавить предмет в список подгрупп:</div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <input type="text" class="gh-input" id="new-subject-name-input" placeholder="Название предмета (напр. Информатика)..." style="flex: 1; min-width: 180px; height: 32px; font-size: 12px;">
+                  <select class="gh-input" id="new-subject-subgroup-select" style="width: 130px; height: 32px; font-size: 12px;">
+                    <option value="1">1 подгруппа</option>
+                    <option value="2">2 подгруппа</option>
+                    <option value="3">3 подгруппа</option>
+                    <option value="4">4 подгруппа</option>
+                    <option value="5">5 подгруппа</option>
+                    <option value="6">6 подгруппа</option>
+                    <option value="7">7 подгруппа</option>
+                    <option value="8">8 подгруппа</option>
+                    <option value="9">9 подгруппа</option>
+                    <option value="10">10 подгруппа</option>
+                  </select>
+                  <button type="button" class="btn-gh btn-primary-gh" id="btn-confirm-add-subject" style="height: 32px; font-size: 12px;">Добавить</button>
+                  <button type="button" class="btn-gh" id="btn-cancel-add-subject" style="height: 32px; font-size: 12px;">Отмена</button>
+                </div>
+              </div>
+
+              <!-- Explicit Save Profile & Subgroups Button -->
+              <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; background: rgba(35, 134, 54, 0.1); border: 1px solid rgba(46, 160, 67, 0.4); border-radius: 6px; padding: 10px 14px;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: var(--color-fg-default);">💾 Сохранить изменения профиля</div>
+                  <div style="font-size: 11px; color: var(--color-fg-muted);">Сохранить группу, никнейм и выбранные подгруппы предметов в аккаунт</div>
+                </div>
+                <button type="button" class="btn-gh btn-primary-gh" id="btn-save-profile-all" style="font-size: 12px; font-weight: 600; padding: 6px 14px; background: #238636; border-color: #2ea043; color: white;">
+                  💾 Сохранить настройки
+                </button>
+              </div>
+            </div>
+
+            <!-- Security & Change Password -->
+            <div class="control-group" style="margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--color-border-muted);">
+              <label class="control-label" style="display: flex; align-items: center; gap: 6px; margin-bottom: 10px;">
+                <span>🔒 Безопасность и смена пароля</span>
+              </label>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 12px;">
+                <div>
+                  <label style="font-size: 11px; color: var(--color-fg-muted); display: block; margin-bottom: 4px;" for="profile-current-pass">Текущий пароль</label>
+                  <div class="password-input-wrap">
+                    <input type="password" class="gh-input" id="profile-current-pass" placeholder="Старый пароль" autocomplete="current-password">
+                    <button type="button" class="btn-toggle-password" data-target="profile-current-pass" title="Показать / скрыть пароль">👁️</button>
+                  </div>
+                </div>
+                <div>
+                  <label style="font-size: 11px; color: var(--color-fg-muted); display: block; margin-bottom: 4px;" for="profile-new-pass">Новый пароль (мин. 4 симв.)</label>
+                  <div class="password-input-wrap">
+                    <input type="password" class="gh-input" id="profile-new-pass" placeholder="Новый пароль" autocomplete="new-password">
+                    <button type="button" class="btn-toggle-password" data-target="profile-new-pass" title="Показать / скрыть пароль">👁️</button>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-gh btn-primary-gh" id="btn-change-password" style="font-size: 12px;">
+                  💾 Сохранить новый пароль
+                </button>
+                <span id="change-pass-status" style="font-size: 12px; display: none;"></span>
+              </div>
+            </div>
+
+            <div class="cloud-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--color-fg-muted);">Вы вошли как:</span>
+                <span class="cloud-id-pill" id="account-login-display"></span>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn-gh link-open-privacy-policy" style="font-size: 11px; padding: 4px 10px;">🛡️ Политика</button>
+                <button type="button" class="btn-gh" id="btn-force-cloud-sync" style="font-size: 11px; padding: 4px 10px;">🔄 Синхр.</button>
+                <button type="button" class="btn-gh" id="btn-account-logout" style="font-size: 11px; padding: 4px 10px; color: var(--color-danger-fg);">🚪 Выйти из аккаунта</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Notifications & Bells -->
+        <div class="gh-box">
+          <div class="gh-box-header">
+            <span>🔔 Уведомления и расписание звонков</span>
+          </div>
+          <div class="gh-box-body">
+            <div class="settings-toggle-row">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">Ежедневные уведомления</div>
+                <div style="font-size: 12px; color: var(--color-fg-muted);">Напоминать о парах текущего дня</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notif-toggle-input">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-toggle-row">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">Время утреннего напоминания</div>
+                <div style="font-size: 12px; color: var(--color-fg-muted);">Отправлять список пар в указанный час</div>
+              </div>
+              <input type="time" class="gh-input" id="notif-time-input" value="07:30" style="width: 110px;">
+            </div>
+
+            <div class="settings-toggle-row">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">Напоминание за 15 минут до пары</div>
+                <div style="font-size: 12px; color: var(--color-fg-muted);">С номером аудитории и корпусом</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notif-before-pair-input" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div style="margin-top: 16px;">
+              <button class="btn-gh" id="btn-test-notification">
+                🔔 Проверить нативное уведомление Windows
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: ABOUT AUTHOR (О РАЗРАБОТЧИКЕ) -->
+    <section class="tab-pane" id="tab-author">
+      <div class="gh-box" style="max-width: 720px; margin: 0 auto;">
+        <div class="gh-box-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>👨‍💻 О разработчике проекта</span>
+            <span class="author-badge" id="author-badge-label">kosterik</span>
+          </div>
+        </div>
+        <div class="gh-box-body" style="padding: 32px 24px; text-align: center;">
+          <div class="large-avatar-preview" id="author-avatar-display" style="width: 88px; height: 88px; font-size: 38px; margin: 0 auto 16px auto; border: 3px solid var(--color-accent-fg); box-shadow: var(--shadow-md);">
+            🎓
+          </div>
+
+          <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 4px;" id="author-nickname-display">kosterik</h2>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--color-accent-fg); margin-bottom: 6px; font-weight: 600;" id="author-group-display">
+            Группа 26-ИВТ-4-1
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--color-fg-muted); margin-bottom: 16px;">
+            Создатель и ведущий разработчик NNTU Map & Schedule
+          </div>
+
+          <p style="font-size: 14px; color: var(--color-fg-default); max-width: 540px; margin: 0 auto 24px auto; line-height: 1.6;">
+            Проект создан для студентов и преподавателей НГТУ им. Р.Е. Алексеева, чтобы навигация по корпусам, поиск аудиторий и расписание занятий всегда были быстрыми, удобными и доступными офлайн.
+          </p>
+
+          <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <a href="https://github.com/kosterik" onclick="event.preventDefault(); window.openExternalUrl('https://github.com/kosterik')" target="_blank" rel="noopener noreferrer" class="btn-gh btn-accent-gh" style="padding: 10px 20px; font-size: 14px;">
+              <span>🐙 GitHub: github.com/kosterik</span>
+              <span>↗</span>
+            </a>
+
+            <a href="https://t.me/k0sterik" onclick="event.preventDefault(); window.openExternalUrl('https://t.me/k0sterik')" target="_blank" rel="noopener noreferrer" class="btn-gh btn-primary-gh" style="padding: 10px 20px; font-size: 14px;">
+              <span>✈️ Telegram: @k0sterik</span>
+              <span>↗</span>
+            </a>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <button type="button" class="btn-gh link-open-privacy-policy" style="font-size: 12px; padding: 6px 14px;">
+              🛡️ Политика конфиденциальности и отказ от ответственности
+            </button>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border-muted); font-size: 12px; color: var(--color-fg-subtle);">
+            Если у вас есть идеи, предложения или вы хотите дополнить схемы аудиторий — пишите в Telegram!
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= Standard Auth Modal (Login / Register) ================= -->
+  <div id="auth-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(1,4,9,0.8); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center;">
+    <div class="gh-box" style="width: 100%; max-width: 440px; margin: 20px; box-shadow: var(--shadow-lg);">
+      <div class="gh-box-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 8px;" id="auth-modal-tabs">
+          <button type="button" class="btn-gh active auth-tab-btn" id="auth-tab-btn-login" style="padding: 4px 12px; font-size: 12px;">🔑 Вход</button>
+          <button type="button" class="btn-gh auth-tab-btn" id="auth-tab-btn-register" style="padding: 4px 12px; font-size: 12px;">📝 Регистрация</button>
+        </div>
+        <button id="btn-close-auth-modal" style="background:none; border:none; color:var(--color-fg-muted); font-size:18px; cursor:pointer;" title="Закрыть">✕</button>
+      </div>
+      <div class="gh-box-body">
+        <div id="auth-status-alert" style="display:none; padding:8px 12px; border-radius:6px; font-size:12px; margin-bottom:14px;"></div>
+
+        <!-- Tab 1: Login Form -->
+        <form id="form-auth-login">
+          <div class="control-group">
+            <label class="control-label" for="auth-login-username">Логин / Никнейм</label>
+            <input type="text" class="gh-input" id="auth-login-username" required placeholder="Введите логин" autocomplete="username">
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="auth-login-password">Пароль</label>
+            <div class="password-input-wrap">
+              <input type="password" class="gh-input" id="auth-login-password" required placeholder="••••••••" autocomplete="current-password">
+              <button type="button" class="btn-toggle-password" data-target="auth-login-password" title="Показать / скрыть пароль">👁️</button>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: var(--color-fg-subtle); margin-bottom: 16px;">
+            ☁️ Настройки, аватарка и закрепленная учебная группа будут автоматически синхронизированы из базы данных.
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+            <button type="button" class="btn-gh" id="btn-switch-to-register" style="font-size: 11px;">Нет аккаунта? Создать</button>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-gh" onclick="document.getElementById('auth-modal').style.display='none'">Отмена</button>
+              <button type="submit" class="btn-gh btn-primary-gh" id="btn-submit-auth-login">Войти</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Tab 2: Register Form -->
+        <form id="form-auth-register" style="display: none;">
+          <div class="control-group">
+            <label class="control-label" for="auth-reg-username">Придумайте логин</label>
+            <input type="text" class="gh-input" id="auth-reg-username" required placeholder="например: kosterik" autocomplete="username">
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="auth-reg-password">Пароль</label>
+            <div class="password-input-wrap">
+              <input type="password" class="gh-input" id="auth-reg-password" required placeholder="Минимум 4 символа" autocomplete="new-password">
+              <button type="button" class="btn-toggle-password" data-target="auth-reg-password" title="Показать / скрыть пароль">👁️</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="auth-reg-group">📌 Ваша учебная группа (закрепится в профиле)</label>
+            <input type="text" class="gh-input" id="auth-reg-group" required placeholder="например: 26-ИВТ-4-1 или 24-ИС-1">
+            <p style="font-size: 11px; color: var(--color-fg-muted); margin-top: 4px;">
+              Расписание занятий будет автоматически привязано к этой группе при каждом входе.
+            </p>
+          </div>
+          <div class="control-group privacy-consent-row" style="margin-top: 14px; margin-bottom: 14px; background: var(--color-canvas-inset); padding: 10px 12px; border-radius: 6px; border: 1px solid var(--color-border-muted);">
+            <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 12px; color: var(--color-fg-default); user-select: none;">
+              <input type="checkbox" id="auth-reg-privacy-checkbox" required style="margin-top: 2px; accent-color: var(--color-accent-fg); cursor: pointer;">
+              <span>
+                Я принимаю <a href="javascript:void(0)" class="link-open-privacy-policy" style="color: var(--color-accent-fg); text-decoration: underline; font-weight: 600;">Политику конфиденциальности</a> (включая отказ разработчиков от ответственности за утечку данных).
+              </span>
+            </label>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+            <button type="button" class="btn-gh" id="btn-switch-to-login" style="font-size: 11px;">Есть аккаунт? Войти</button>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-gh" onclick="document.getElementById('auth-modal').style.display='none'">Отмена</button>
+              <button type="submit" class="btn-gh btn-accent-gh" id="btn-submit-auth-register">Зарегистрироваться</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Group Selector Modal ================= -->
+  <div id="group-select-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(1,4,9,0.8); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center;">
+    <div class="gh-box" style="width: 100%; max-width: 480px; margin: 20px; box-shadow: var(--shadow-lg);">
+      <div class="gh-box-header">
+        <span>👥 Выбор учебной группы НГТУ</span>
+        <button id="btn-close-group-modal" style="background:none; border:none; color:var(--color-fg-muted); font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <div class="gh-box-body">
+        <div style="font-size: 13px; color: var(--color-fg-muted); margin-bottom: 12px;">
+          Поиск по всем реальным учебным группам университета НГТУ с сервера расписания:
+        </div>
+
+        <div class="control-group" style="margin-bottom: 12px;">
+          <input type="text" class="gh-input" id="group-search-input" placeholder="Введите название группы (например: 24-ИС-1, 25-ИВТ...)" autocomplete="off">
+        </div>
+
+        <div style="font-size: 11px; color: var(--color-fg-subtle); margin-bottom: 6px;">Популярные группы институтов:</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;" id="group-popular-chips">
+          <button type="button" class="btn-gh group-quick-chip" data-group="24-ИС-1">24-ИС-1</button>
+          <button type="button" class="btn-gh group-quick-chip" data-group="25-ИВТ-4-1">25-ИВТ-4-1</button>
+          <button type="button" class="btn-gh group-quick-chip" data-group="24-ПМ-1">24-ПМ-1</button>
+          <button type="button" class="btn-gh group-quick-chip" data-group="24-А">24-А</button>
+          <button type="button" class="btn-gh group-quick-chip" data-group="23-ЭЭС">23-ЭЭС</button>
+          <button type="button" class="btn-gh group-quick-chip" data-group="24-БД-1">24-БД-1</button>
+        </div>
+
+        <div id="group-search-results" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--color-border-default); border-radius: 6px; padding: 6px; background: var(--color-canvas-subtle);">
+          <!-- Live groups dynamically populated here -->
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+          <button type="button" class="btn-gh" onclick="document.getElementById('group-select-modal').style.display='none'">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Privacy Policy Modal ================= -->
+  <div id="privacy-policy-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(1,4,9,0.85); backdrop-filter:blur(6px); z-index:300; align-items:center; justify-content:center;">
+    <div class="gh-box" style="width: 100%; max-width: 620px; max-height: 85vh; display: flex; flex-direction: column; margin: 20px; box-shadow: var(--shadow-lg);">
+      <div class="gh-box-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <span>🛡️</span>
+          <strong style="font-size: 14px;">Политика конфиденциальности и условия сервиса</strong>
+        </span>
+        <button id="btn-close-privacy-modal" style="background:none; border:none; color:var(--color-fg-muted); font-size:18px; cursor:pointer;" title="Закрыть">✕</button>
+      </div>
+      <div class="gh-box-body" style="overflow-y: auto; padding: 18px 20px; font-size: 13px; line-height: 1.6; color: var(--color-fg-default);">
+        
+        <!-- Crucial Disclaimer Alert Box -->
+        <div style="background: rgba(218, 54, 51, 0.15); border: 1px solid rgba(248, 81, 73, 0.4); border-radius: 6px; padding: 14px; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 8px; color: var(--color-danger-fg); font-weight: 700; margin-bottom: 6px; font-size: 14px;">
+            <span>⚠️</span> ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ И ОТКАЗ ОТ ОТВЕТСТВЕННОСТИ
+          </div>
+          <div style="color: var(--color-fg-default); font-size: 12.5px;">
+            Администрация, разработчики и владельцы приложения <strong>НЕ НЕСУТ ОТВЕТСТВЕННОСТИ</strong> за возможную утечку персональных данных, несанкционированный доступ третьих лиц, утерю паролей, перехват сетевого трафика или технические сбои внешних облачных баз данных.<br><br>
+            <strong>Настоятельно рекомендуется:</strong> НЕ используйте в данном приложении пароли от вашего официального личного кабинета НГТУ, личной почты, банка или других важных аккаунтов. Пароль в приложении предназначен исключительно для синхронизации настроек расписания между вашими устройствами.
+          </div>
+        </div>
+
+        <h4 style="font-size: 13px; margin: 12px 0 6px 0; color: var(--color-accent-fg);">1. Общие положения</h4>
+        <p style="margin-bottom: 10px; color: var(--color-fg-muted);">
+          Приложение «Карта и Расписание НГТУ им. Р.Е. Алексеева» является студенческим неофициальным вспомогательным инструментом, разработанным для удобства навигации по корпусам вуза и быстрого доступа к расписанию занятий.
+        </p>
+
+        <h4 style="font-size: 13px; margin: 12px 0 6px 0; color: var(--color-accent-fg);">2. Какие данные обрабатываются</h4>
+        <p style="margin-bottom: 10px; color: var(--color-fg-muted);">
+          Сервис обрабатывает только те данные, которые пользователь добровольно указывает при создании профиля:
+        </p>
+        <ul style="margin: 0 0 10px 20px; color: var(--color-fg-muted);">
+          <li>Логин (псевдоним) пользователя;</li>
+          <li>Пароль (хранится в базе данных для авторизации и синхронизации настроек);</li>
+          <li>Номер закрепленной учебной группы (например: 26-ИВТ-4-1);</li>
+          <li>Индивидуальные настройки подгрупп для учебных дисциплин;</li>
+          <li>Аватар профиля (по выбору пользователя).</li>
+        </ul>
+        <p style="margin-bottom: 10px; color: var(--color-fg-muted);">
+          Приложение <strong>НЕ</strong> запрашивает паспортные данные, номера телефонов, платежную информацию или документы.
+        </p>
+
+        <h4 style="font-size: 13px; margin: 12px 0 6px 0; color: var(--color-accent-fg);">3. Условия обслуживания («AS IS»)</h4>
+        <p style="margin-bottom: 10px; color: var(--color-fg-muted);">
+          Приложение предоставляется на условиях «КАК ЕСТЬ» («AS IS»). Разработчики не гарантируют абсолютную бесперебойность или безошибочность работы, но стремятся оперативно устранять возникающие технические сбои.
+        </p>
+
+        <h4 style="font-size: 13px; margin: 12px 0 6px 0; color: var(--color-accent-fg);">4. Согласие пользователя</h4>
+        <p style="margin-bottom: 0; color: var(--color-fg-muted);">
+          Продолжая использование сервиса, создавая аккаунт или нажимая «Принимаю политику конфиденциальности», вы подтверждаете, что вам исполнилось 14 лет, вы полностью прочитали настоящие условия, согласны с отказом от ответственности за утечку данных и принимаете все связанные риски на себя.
+        </p>
+      </div>
+      <div class="gh-box-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--color-canvas-subtle); border-top: 1px solid var(--color-border-default);">
+        <button type="button" class="btn-gh" id="btn-privacy-modal-cancel">Закрыть</button>
+        <button type="button" class="btn-gh btn-primary-gh" id="btn-privacy-modal-accept" style="background: #238636; border-color: #2ea043; color: white; font-weight: 600;">
+          ✅ Принимаю условия
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= App Footer ================= -->
+  <footer class="app-footer">
+    <div>
+      <strong>NNTU Map & Schedule</strong> — Навигатор и расписание НГТУ им. Р.Е. Алексеева.
+    </div>
+    <div class="footer-credits">
+      Создатель: <strong>kosterik</strong> (<a href="https://t.me/k0sterik" target="_blank">@k0sterik</a>) • <a href="https://github.com/kosterik" target="_blank">GitHub</a> • <a href="javascript:void(0)" class="link-open-privacy-policy" style="color: var(--color-accent-fg); text-decoration: underline;">Политика конфиденциальности</a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/libs/firebase-app-compat.js"></script>
+  <script src="js/libs/firebase-firestore-compat.js"></script>
+  <script src="js/firebase_service.js"></script>
+  <script src="js/map_viewer.js"></script>
+  <script src="js/schedule.js"></script>
+  <script src="js/widgets.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
