@@ -15,12 +15,17 @@ public class WidgetDualProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        android.content.SharedPreferences prefs = context.getSharedPreferences("WidgetData", Context.MODE_PRIVATE);
+        String groupName = prefs.getString("groupName", "Не выбрана");
+        String todayData = prefs.getString("todayData", "Загрузка...");
+        String tomorrowData = prefs.getString("tomorrowData", "Загрузка...");
+
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_dual_layout);
 
-            views.setTextViewText(R.id.widget_dual_title, "НГТУ: Сегодня и Завтра");
-            views.setTextViewText(R.id.widget_today_text, "1. Архитектура ВС (1205)\n2. ОС (6243)\n3. Базы данных (1304)");
-            views.setTextViewText(R.id.widget_tomorrow_text, "2. Матлогика (1105)\n3. Физкультура (СК)\n4. Веб-разработка (6312)");
+            views.setTextViewText(R.id.widget_dual_title, "НГТУ: " + groupName);
+            views.setTextViewText(R.id.widget_today_text, todayData);
+            views.setTextViewText(R.id.widget_tomorrow_text, tomorrowData);
 
             Intent intent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

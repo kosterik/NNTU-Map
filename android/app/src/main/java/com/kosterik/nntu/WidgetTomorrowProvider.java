@@ -21,11 +21,15 @@ public class WidgetTomorrowProvider extends AppWidgetProvider {
     }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        android.content.SharedPreferences prefs = context.getSharedPreferences("WidgetData", Context.MODE_PRIVATE);
+        String groupName = prefs.getString("groupName", "Не выбрана");
+        String tomorrowData = prefs.getString("tomorrowData", "Загрузка...");
+
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_tomorrow_layout);
 
         views.setTextViewText(R.id.widget_title, "Пары на завтра");
-        views.setTextViewText(R.id.widget_group_badge, "23-ИВТ-1");
-        views.setTextViewText(R.id.widget_content_text, "1 пара: Архитектура ВС (1205)\n2 пара: ОС (6243)\n3 пара: БД и СУБД (1304)");
+        views.setTextViewText(R.id.widget_group_badge, groupName);
+        views.setTextViewText(R.id.widget_content_text, tomorrowData);
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

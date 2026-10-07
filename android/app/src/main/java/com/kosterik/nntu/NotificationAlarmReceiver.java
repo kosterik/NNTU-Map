@@ -39,9 +39,14 @@ public class NotificationAlarmReceiver extends BroadcastReceiver {
             builder = new Notification.Builder(context);
         }
 
+        String title = intent.getStringExtra("title");
+        String message = intent.getStringExtra("message");
+        if (title == null) title = "НГТУ: Расписание на сегодня";
+        if (message == null) message = "Первая пара в 07:30";
+
         builder.setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("НГТУ: Расписание на сегодня")
-                .setContentText("Первая пара в 07:30 в аудитории 1205 (к.1)")
+                .setContentTitle(title)
+                .setContentText(message)
                 .setAutoCancel(true);
 
         if (manager != null) {

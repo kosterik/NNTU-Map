@@ -96,6 +96,13 @@ class NotificationService {
       } catch (err) {}
     }
 
+    // 2.5. Android Native Notification (via JavascriptInterface)
+    if (window.AndroidWidget && typeof window.AndroidWidget.showNotification === "function") {
+      try {
+        window.AndroidWidget.showNotification(title, body);
+      } catch (err) {}
+    }
+
     // 3. In-app toast popup
     this.showToast(`🔔 ${title}: ${body}`);
   }

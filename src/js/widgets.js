@@ -13,6 +13,34 @@ class WidgetsEngine {
   init() {
     this.renderTomorrowWidget();
     this.renderTodayTomorrowWidget();
+    this.updateAndroidWidgets();
+  }
+
+  updateAndroidWidgets() {
+    if (!window.AndroidWidget) return;
+    
+    const groupName = this.scheduleManager.scheduleData?.group || "Не выбрана";
+    
+    const todayIndex = new Date().getDay() === 0 ? 1 : new Date().getDay();
+    let tomorrowIndex = todayIndex + 1;
+    if (tomorrowIndex > 6) tomorrowIndex = 1;
+    
+    const todayLessons = this.scheduleManager.getLessonsForDay(todayIndex);
+    const tomorrowLessons = this.scheduleManager.getLessonsForDay(tomorrowIndex);
+    
+    const formatLessons = (lessons) => {
+      if (lessons.length === 0) return "Пар нет";
+      return lessons.map((l, idx) => `${idx + 1}. ${l.subject} (${l.room})`).join("\n");
+    };
+    
+    const todayStr = formatLessons(todayLessons);
+    const tomorrowStr = formatLessons(tomorrowLessons);
+    
+    try {
+      window.AndroidWidget.updateWidgetData(groupName, todayStr, tomorrowStr);
+    } catch (e) {
+      console.error("Failed to update Android widgets:", e);
+    }
   }
 
   renderTomorrowWidget() {

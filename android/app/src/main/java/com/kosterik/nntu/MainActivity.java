@@ -14,6 +14,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 
 /**
  * MainActivity for NNTU Map & Schedule
@@ -42,6 +46,13 @@ public class MainActivity extends Activity {
         // Step 2: Set up WebView
         mWebView = new WebView(this);
         setContentView(mWebView);
+        mWebView.addJavascriptInterface(new WidgetBridge(), "AndroidWidget");
+
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
 
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -144,5 +155,40 @@ public class MainActivity extends Activity {
             mWebView.destroy();
         }
         super.onDestroy();
+    }
+
+    public class WidgetBridge {
+        @android.webkit.JavascriptInterface
+        public void updateWidgetData(String groupName, String todayData, String tomorrowData) {
+            SharedPreferences prefs = getSharedPreferences("WidgetData", Context.MODE_PRIVATE);
+            prefs.edit()
+                .putString("groupName", groupName)
+                .putString("todayData", todayData)
+                .putString("tomorrowData", tomorrowData)
+                .apply();
+            
+            Intent intent = new Intent(MainActivity.this, WidgetDualProvider.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            int[] ids = AppWidgetManager.getInstance(getApplicationContext())
+                    .getAppWidgetIds(new ComponentName(getApplicationContext(), WidgetDualProvider.class));
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+            sendBroadcast(intent);
+
+            Intent intent2 = new Intent(MainActivity.this, WidgetTomorrowProvider.class);
+            intent2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            int[] ids2 = AppWidgetManager.getInstance(getApplicationContext())
+                    .getAppWidgetIds(new ComponentName(getApplicationContext(), WidgetTomorrowProvider.class));
+            intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
+            sendBroadcast(intent2);
+        }
+
+        @android.webkit.JavascriptInterface
+        public void showNotification(String title, String message) {
+            Intent intent = new Intent(MainActivity.this, NotificationAlarmReceiver.class);
+            intent.setAction("SHOW_NOTIFICATION");
+            intent.putExtra("title", title);
+            intent.putExtra("message", message);
+            sendBroadcast(intent);
+        }
     }
 }
