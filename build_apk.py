@@ -59,6 +59,21 @@ def main():
     assets_dir = BASE_DIR / "android" / "app" / "src" / "main" / "assets"
     java_dir = BASE_DIR / "android" / "app" / "src" / "main" / "java"
 
+    # Step 0: Sync assets
+    print("\n--- Step 0: Sync latest src and app_assets to Android assets ---")
+    dest_src = assets_dir / "src"
+    dest_app_assets = assets_dir / "app_assets"
+    shutil.rmtree(dest_src, ignore_errors=True)
+    shutil.copytree(BASE_DIR / "src", dest_src)
+
+    shutil.rmtree(dest_app_assets, ignore_errors=True)
+    shutil.copytree(BASE_DIR / "app_assets", dest_app_assets)
+    schedules_dir = dest_app_assets / "schedules"
+    if schedules_dir.exists():
+        for f in list(schedules_dir.iterdir()):
+            if not f.name.isascii():
+                f.unlink()
+
     # Step 1: Compile Android resources
     print("\n--- Step 1: aapt2 compile resources ---")
     compiled_res_zip = BUILD_TMP / "compiled_res.zip"
@@ -76,6 +91,7 @@ def main():
         "--target-sdk-version", "34",
         "--version-code", "2",
         "--version-name", "2.0.0",
+        "--no-compress",
         "-A", str(assets_dir),
         "--java", str(gen_dir),
         "--auto-add-overlay",
