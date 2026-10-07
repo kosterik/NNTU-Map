@@ -63,6 +63,25 @@ public class MainActivity extends Activity {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
+        mWebView.setDownloadListener(new android.webkit.DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimeType, long contentLength) {
+                android.app.DownloadManager.Request request = new android.app.DownloadManager.Request(android.net.Uri.parse(url));
+                request.setMimeType(mimeType);
+                String cookies = android.webkit.CookieManager.getInstance().getCookie(url);
+                request.addRequestHeader("cookie", cookies);
+                request.addRequestHeader("User-Agent", userAgent);
+                request.setDescription("Скачивание обновления NNTU Map");
+                request.setTitle(android.webkit.URLUtil.guessFileName(url, contentDisposition, mimeType));
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(android.os.Environment.DIRECTORY_DOWNLOADS, android.webkit.URLUtil.guessFileName(url, contentDisposition, mimeType));
+                android.app.DownloadManager dm = (android.app.DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                dm.enqueue(request);
+                android.widget.Toast.makeText(getApplicationContext(), "Началось скачивание файла...", android.widget.Toast.LENGTH_LONG).show();
+            }
+        });
+
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
@@ -189,6 +208,20 @@ public class MainActivity extends Activity {
             intent.putExtra("title", title);
             intent.putExtra("message", message);
             sendBroadcast(intent);
+        }
+
+        @android.webkit.JavascriptInterface
+        public void setAlarmClock(int hour, int minute, String message) {
+            Intent intent = new Intent(android.provider.AlarmClock.ACTION_SET_ALARM);
+            intent.putExtra(android.provider.AlarmClock.EXTRA_MESSAGE, message);
+            intent.putExtra(android.provider.AlarmClock.EXTRA_HOUR, hour);
+            intent.putExtra(android.provider.AlarmClock.EXTRA_MINUTES, minute);
+            intent.putExtra(android.provider.AlarmClock.EXTRA_SKIP_UI, false);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                Log.e(TAG, "No alarm app found", e);
+            }
         }
     }
 }

@@ -1150,4 +1150,39 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-launch-desktop-widget")?.addEventListener("click", () => {
     window.open("/src/widget_popup.html", "NNTU_Mini_Widget", "width=390,height=540,menubar=no,toolbar=no,location=no,status=no,resizable=yes");
   });
+  
+  // Auto Updates
+  document.getElementById("btn-check-updates")?.addEventListener("click", async () => {
+    try {
+      const currentVersion = "v2.0.6"; // current version for next release
+      const response = await fetch("https://api.github.com/repos/kosterik/NNTU-Map/releases/latest");
+      const data = await response.json();
+      
+      if (data.tag_name && data.tag_name !== currentVersion) {
+        const isAndroid = !!window.AndroidWidget;
+        let downloadUrl = "";
+        
+        if (isAndroid) {
+          const asset = data.assets.find(a => a.name.endsWith(".apk"));
+          if (asset) downloadUrl = asset.browser_download_url;
+        } else {
+          const asset = data.assets.find(a => a.name.endsWith(".exe"));
+          if (asset) downloadUrl = asset.browser_download_url;
+        }
+        
+        if (downloadUrl) {
+          if (confirm(`🚀 Доступна новая версия: ${data.tag_name}!\n\n${data.name}\n\nНажмите ОК, чтобы скачать и установить обновление.`)) {
+            window.location.href = downloadUrl;
+          }
+        } else {
+          alert(`Доступна новая версия ${data.tag_name}, но файл для вашей платформы не найден.`);
+        }
+      } else {
+        alert("🎉 У вас установлена самая последняя версия приложения!");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Ошибка при проверке обновлений. Проверьте интернет-соединение.");
+    }
+  });
 });

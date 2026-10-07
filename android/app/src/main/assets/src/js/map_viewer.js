@@ -367,7 +367,7 @@ class MapViewer {
   }
 
   zoom(delta) {
-    this.scale = Math.min(Math.max(0.5, this.scale + delta), 4.5);
+    this.scale = Math.min(Math.max(0.25, this.scale + delta), 9.0);
     this.applyTransform();
   }
 

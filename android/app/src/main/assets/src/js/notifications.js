@@ -74,6 +74,68 @@ class NotificationService {
       this.requestPermission();
       this.sendNotification("НГТУ Расписание", "Тестовое уведомление: пара через 15 минут в ауд. 6254 (к.6)");
     });
+
+    // Android Alarm Clock
+    const alarmRow = document.getElementById("row-system-alarm");
+    const alarmBtn = document.getElementById("btn-set-alarm");
+    const alarmOffset = document.getElementById("notif-alarm-offset");
+    if (window.AndroidWidget && alarmRow && alarmBtn) {
+      alarmRow.style.display = "flex";
+      alarmBtn.addEventListener("click", () => {
+        const offset = parseInt(alarmOffset.value) || 80;
+        this.setSystemAlarm(offset);
+      });
+    }
+  }
+
+  setSystemAlarm(offsetMinutes) {
+    if (!this.scheduleManager) return;
+    const now = new Date();
+    let targetIndex = now.getDay() === 0 ? 1 : now.getDay();
+    let lessons = this.scheduleManager.getLessonsForDay(targetIndex);
+    
+    const isDayOver = () => {
+      if (lessons.length === 0) return true;
+      const last = lessons[lessons.length - 1];
+      if (!last.time) return true;
+      const endStr = last.time.split("-")[1];
+      if (!endStr) return true;
+      const [eH, eM] = endStr.trim().split(":").map(Number);
+      return (now.getHours() * 60 + now.getMinutes()) > (eH * 60 + eM);
+    };
+
+    if (lessons.length === 0 || isDayOver()) {
+      targetIndex = targetIndex + 1;
+      if (targetIndex > 6) targetIndex = 1;
+      lessons = this.scheduleManager.getLessonsForDay(targetIndex);
+    }
+
+    if (lessons.length === 0) {
+      this.showToast("В ближайшие дни пар нет!");
+      return;
+    }
+
+    const first = lessons[0];
+    if (!first.time) return;
+
+    const [startStr] = first.time.split("-");
+    const [pH, pM] = startStr.trim().split(":").map(Number);
+    
+    let alarmTotalMin = pH * 60 + pM - offsetMinutes;
+    if (alarmTotalMin < 0) alarmTotalMin += 24 * 60;
+
+    const aH = Math.floor(alarmTotalMin / 60);
+    const aM = alarmTotalMin % 60;
+    const message = `НГТУ: ${first.subject} (${first.room})`;
+
+    if (window.AndroidWidget && typeof window.AndroidWidget.setAlarmClock === "function") {
+      try {
+        window.AndroidWidget.setAlarmClock(aH, aM, message);
+        this.showToast(`Будильник передан в систему: ${String(aH).padStart(2,'0')}:${String(aM).padStart(2,'0')}`);
+      } catch (err) {
+        this.showToast("Ошибка при установке будильника");
+      }
+    }
   }
 
   async sendNotification(title, body) {
