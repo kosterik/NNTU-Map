@@ -90,9 +90,8 @@ def main():
         "--min-sdk-version", "26",
         "--target-sdk-version", "34",
         "--version-code", "4",
-        "--version-name", "2.0.2",
+        "--version-name", "2.0.3",
         "--no-compress",
-        "-A", str(assets_dir),
         "--java", str(gen_dir),
         "--auto-add-overlay",
         str(compiled_res_zip)
@@ -139,6 +138,17 @@ def main():
         "-C", str(dex_dir),
         "classes.dex"
     ])
+
+    # Step 5.5: Add assets to unaligned.apk manually to fix Windows backslash issue
+    print("\n--- Step 5.5: Add assets manually to fix backslash issues ---")
+    import zipfile
+    with zipfile.ZipFile(unaligned_apk, 'a') as apk_zip:
+        for f in assets_dir.rglob('*'):
+            if f.is_file():
+                rel_path = f.relative_to(assets_dir).as_posix()
+                arcname = f"assets/{rel_path}"
+                apk_zip.write(f, arcname, compress_type=zipfile.ZIP_STORED)
+
 
     # Step 6: zipalign
     print("\n--- Step 6: zipalign ---")
