@@ -90,7 +90,7 @@ def main():
         "--min-sdk-version", "26",
         "--target-sdk-version", "34",
         "--version-code", "4",
-        "--version-name", "2.0.3",
+        "--version-name", "2.0.4",
         "--no-compress",
         "--java", str(gen_dir),
         "--auto-add-overlay",

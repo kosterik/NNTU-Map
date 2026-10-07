@@ -1,0 +1,5 @@
+﻿
+assets/app_assets/buildings_index.json
+assets/src/index.html
+
+

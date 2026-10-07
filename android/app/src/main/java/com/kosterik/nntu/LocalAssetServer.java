@@ -40,7 +40,17 @@ public class LocalAssetServer {
         }
 
         try {
-            mServerSocket = new ServerSocket(0, 50, InetAddress.getByName("127.0.0.1"));
+            int[] ports = {49312, 49313, 49314, 0};
+            for (int p : ports) {
+                try {
+                    mServerSocket = new ServerSocket();
+                    mServerSocket.setReuseAddress(true);
+                    mServerSocket.bind(new java.net.InetSocketAddress("127.0.0.1", p), 50);
+                    break;
+                } catch (Exception e) {
+                    if (p == 0) throw e;
+                }
+            }
             mPort = mServerSocket.getLocalPort();
             mRunning = true;
             Log.d(TAG, "Local asset server started on http://127.0.0.1:" + mPort);
