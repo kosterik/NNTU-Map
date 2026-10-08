@@ -155,6 +155,46 @@ public class LocalAssetServer {
                 return;
             }
 
+            // Proxy to my-api.nntu.ru for /api/
+            if (path.startsWith("api/")) {
+                try {
+                    String proxyQuery = (qIdx != -1) ? requestLine.split(" ")[1].substring(qIdx) : "";
+                    java.net.URL url = new java.net.URL("https://my-api.nntu.ru/" + path + proxyQuery);
+                    java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod(method);
+                    conn.setConnectTimeout(5000);
+                    conn.setReadTimeout(5000);
+
+                    int code = conn.getResponseCode();
+                    String cType = conn.getContentType();
+                    
+                    StringBuilder proxySb = new StringBuilder();
+                    proxySb.append("HTTP/1.1 ").append(code).append(" OK\r\n");
+                    if (cType != null) {
+                        proxySb.append("Content-Type: ").append(cType).append("\r\n");
+                    }
+                    proxySb.append("Access-Control-Allow-Origin: *\r\n");
+                    proxySb.append("Connection: close\r\n\r\n");
+                    out.write(proxySb.toString().getBytes("UTF-8"));
+
+                    InputStream proxyIn = code >= 400 ? conn.getErrorStream() : conn.getInputStream();
+                    if (proxyIn != null) {
+                        byte[] proxyBuf = new byte[8192];
+                        int proxyRead;
+                        while ((proxyRead = proxyIn.read(proxyBuf)) != -1) {
+                            out.write(proxyBuf, 0, proxyRead);
+                        }
+                        proxyIn.close();
+                    }
+                    out.flush();
+                } catch (Exception e) {
+                    Log.e(TAG, "Proxy failed", e);
+                    sendResponse(out, 500, "Proxy Error", "application/json", "{\"error\":\"Proxy failed\"}".getBytes("UTF-8"));
+                }
+                client.close();
+                return;
+            }
+
             // Find matching asset stream
             String[] candidates = new String[] {
                 path,
