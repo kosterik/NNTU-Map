@@ -782,7 +782,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const currentVal = inlineRegGroupInput?.value.trim() || "";
-    inlineRegGroupList.innerHTML = filtered.slice(0, 60).map(g => {
+    inlineRegGroupList.innerHTML = filtered.slice(0, 3000).map(g => {
       const isSelected = g.toLowerCase() === currentVal.toLowerCase();
       return `
         <button type="button" class="btn-gh inline-reg-group-item" data-group="${g}" style="text-align:left; display:flex; justify-content:space-between; align-items:center; padding:6px 10px; font-size:13px; font-weight:${isSelected ? '600' : 'normal'}; background:${isSelected ? 'var(--color-accent-subtle)' : 'transparent'};">
@@ -1082,7 +1082,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const currentGroup = localStorage.getItem("nntu_current_group") || "";
-    groupResultsContainer.innerHTML = filtered.slice(0, 60).map(g => {
+    groupResultsContainer.innerHTML = filtered.slice(0, 3000).map(g => {
       const isCurrent = g === currentGroup;
       return `
         <button type="button" class="btn-gh group-result-item" data-group="${g}" style="text-align:left; display:flex; justify-content:space-between; align-items:center; padding:6px 12px; font-size:13px; font-weight:${isCurrent ? '600' : 'normal'}; background:${isCurrent ? 'var(--color-accent-subtle)' : 'transparent'};">
