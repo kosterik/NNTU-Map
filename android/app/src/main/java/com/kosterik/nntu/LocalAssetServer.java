@@ -156,12 +156,11 @@ public class LocalAssetServer {
             }
 
             // Proxy to my-api.nntu.ru for /api/
-            if (path.startsWith("api/")) {
+            if (path.equals("api/schedule/groups")) {
                 try {
-                    String proxyQuery = (qIdx != -1) ? requestLine.split(" ")[1].substring(qIdx) : "";
-                    java.net.URL url = new java.net.URL("https://my-api.nntu.ru/" + path + proxyQuery);
+                    java.net.URL url = new java.net.URL("https://my-api.nntu.ru/lesson-schedule/public/groups");
                     java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod(method);
+                    conn.setRequestMethod("GET");
                     conn.setConnectTimeout(5000);
                     conn.setReadTimeout(5000);
 
@@ -189,11 +188,12 @@ public class LocalAssetServer {
                     out.flush();
                 } catch (Exception e) {
                     Log.e(TAG, "Proxy failed", e);
-                    sendResponse(out, 500, "Proxy Error", "application/json", "{\"error\":\"Proxy failed\"}".getBytes("UTF-8"));
+                    sendResponse(out, 500, "Proxy Error", "application/json", "[]".getBytes("UTF-8"));
                 }
                 client.close();
                 return;
             }
+
 
             // Find matching asset stream
             String[] candidates = new String[] {
