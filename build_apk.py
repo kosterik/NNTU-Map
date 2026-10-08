@@ -73,6 +73,8 @@ def main():
         for f in list(schedules_dir.iterdir()):
             if not f.name.isascii():
                 f.unlink()
+    if (BASE_DIR / "version.json").exists():
+        shutil.copy2(BASE_DIR / "version.json", assets_dir / "version.json")
 
     # Step 1: Compile Android resources
     print("\n--- Step 1: aapt2 compile resources ---")
@@ -89,8 +91,8 @@ def main():
         "--manifest", str(manifest),
         "--min-sdk-version", "26",
         "--target-sdk-version", "34",
-        "--version-code", "11",
-        "--version-name", "2.1.1",
+        "--version-code", "12",
+        "--version-name", "2.1.2",
         "--no-compress",
         "--java", str(gen_dir),
         "--auto-add-overlay",

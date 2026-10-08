@@ -274,5 +274,16 @@ public class MainActivity extends Activity {
                 Log.e(TAG, "No alarm app found", e);
             }
         }
+
+        @android.webkit.JavascriptInterface
+        public void openBrowser(String url) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (Exception e) {
+                Log.e(TAG, "Cannot open browser for url: " + url, e);
+            }
+        }
     }
 }

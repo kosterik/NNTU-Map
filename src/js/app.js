@@ -1217,36 +1217,116 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Auto Updates
   document.getElementById("btn-check-updates")?.addEventListener("click", async () => {
+    const btn = document.getElementById("btn-check-updates");
+    const originalText = btn ? btn.textContent : "🔄 Проверить обновления";
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "⏳ Проверка...";
+    }
+    
     try {
-      const currentVersion = "v2.1.1"; // current version for next release
-      const response = await fetch("https://api.github.com/repos/kosterik/NNTU-Map/releases/latest");
-      const data = await response.json();
+      const currentVersion = "v2.1.2"; // current installed version
+      let latestVersion = null;
+      let downloadUrl = "";
+      let releaseNotes = "";
+      let releaseName = "";
+      let htmlUrl = "https://github.com/kosterik/NNTU-Map/releases";
       
-      if (data.tag_name && data.tag_name !== currentVersion) {
-        const isAndroid = !!window.AndroidWidget;
-        let downloadUrl = "";
-        
-        if (isAndroid) {
-          const asset = data.assets.find(a => a.name.endsWith(".apk"));
-          if (asset) downloadUrl = asset.browser_download_url;
-        } else {
-          const asset = data.assets.find(a => a.name.endsWith(".exe"));
-          if (asset) downloadUrl = asset.browser_download_url;
-        }
-        
-        if (downloadUrl) {
-          if (confirm(`🚀 Доступна новая версия: ${data.tag_name}!\n\n${data.name}\n\nНажмите ОК, чтобы скачать и установить обновление.`)) {
-            window.location.href = downloadUrl;
+      // Strategy 1: Fetch raw version.json from GitHub main (Direct CDN, NO 60 req/hr rate limits!)
+      try {
+        const rawRes = await fetch(`https://raw.githubusercontent.com/kosterik/NNTU-Map/main/version.json?t=${Date.now()}`, {
+          cache: "no-store"
+        });
+        if (rawRes.ok) {
+          const rawData = await rawRes.json();
+          if (rawData && rawData.version) {
+            latestVersion = rawData.version;
+            releaseName = rawData.name || rawData.version;
+            releaseNotes = rawData.notes || "";
+            downloadUrl = !!window.AndroidWidget ? rawData.apkUrl : rawData.exeUrl;
+            if (rawData.releaseUrl) htmlUrl = rawData.releaseUrl;
           }
-        } else {
-          alert(`Доступна новая версия ${data.tag_name}, но файл для вашей платформы не найден.`);
         }
+      } catch (err) {
+        console.warn("[Updates] Raw version.json check failed, trying API:", err);
+      }
+
+      // Strategy 2: Fallback to GitHub Releases API if strategy 1 was unavailable
+      if (!latestVersion) {
+        try {
+          const apiRes = await fetch(`https://api.github.com/repos/kosterik/NNTU-Map/releases/latest?t=${Date.now()}`, {
+            cache: "no-store",
+            headers: { "Accept": "application/vnd.github.v3+json" }
+          });
+          if (apiRes.ok) {
+            const apiData = await apiRes.json();
+            if (apiData && apiData.tag_name) {
+              latestVersion = apiData.tag_name;
+              releaseName = apiData.name || apiData.tag_name;
+              releaseNotes = apiData.body || "";
+              if (apiData.html_url) htmlUrl = apiData.html_url;
+              const isAndroid = !!window.AndroidWidget;
+              const asset = (apiData.assets || []).find(a => isAndroid ? a.name.endsWith(".apk") : a.name.endsWith(".exe"));
+              if (asset) downloadUrl = asset.browser_download_url;
+            }
+          }
+        } catch (apiErr) {
+          console.warn("[Updates] GitHub API check failed:", apiErr);
+        }
+      }
+
+      // Version comparison helper: compares semantic versions e.g. "v2.1.2" vs "v2.1.1"
+      function isNewerVersion(remote, local) {
+        if (!remote) return false;
+        const cleanRemote = remote.replace(/^v/, "").trim();
+        const cleanLocal = local.replace(/^v/, "").trim();
+        if (cleanRemote === cleanLocal) return false;
+        
+        const rParts = cleanRemote.split(".").map(n => parseInt(n, 10) || 0);
+        const lParts = cleanLocal.split(".").map(n => parseInt(n, 10) || 0);
+        const maxLen = Math.max(rParts.length, lParts.length);
+        for (let i = 0; i < maxLen; i++) {
+          const r = rParts[i] || 0;
+          const l = lParts[i] || 0;
+          if (r > l) return true;
+          if (r < l) return false;
+        }
+        return false;
+      }
+
+      if (latestVersion && isNewerVersion(latestVersion, currentVersion)) {
+        const confirmMsg = `🚀 Доступна новая версия: ${latestVersion}!\n\n${releaseName}` +
+          (releaseNotes ? `\n\nЧто нового:\n${releaseNotes}` : "") +
+          `\n\nНажмите ОК, чтобы скачать обновление.`;
+        
+        if (confirm(confirmMsg)) {
+          const targetUrl = downloadUrl || htmlUrl;
+          if (window.AndroidWidget && typeof window.AndroidWidget.openBrowser === "function") {
+            window.AndroidWidget.openBrowser(targetUrl);
+          } else {
+            window.location.href = targetUrl;
+          }
+        }
+      } else if (latestVersion) {
+        alert(`🎉 У вас установлена самая актуальная версия приложения (${currentVersion})!`);
       } else {
-        alert("🎉 У вас установлена самая последняя версия приложения!");
+        if (confirm("Не удалось автоматически связаться с сервером обновлений.\n\nОткрыть страницу релизов на GitHub в браузере?")) {
+          const targetUrl = htmlUrl;
+          if (window.AndroidWidget && typeof window.AndroidWidget.openBrowser === "function") {
+            window.AndroidWidget.openBrowser(targetUrl);
+          } else {
+            window.location.href = targetUrl;
+          }
+        }
       }
     } catch (e) {
-      console.error(e);
+      console.error("[Updates] Error:", e);
       alert("Ошибка при проверке обновлений. Проверьте интернет-соединение.");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
     }
   });
 });
