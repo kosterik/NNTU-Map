@@ -208,8 +208,19 @@ class FirebaseService {
           } else {
             localStorage.removeItem("nntu_user_avatar");
           }
-          if (data.subjectSubgroups) {
-            localStorage.setItem("nntu_subject_subgroups", JSON.stringify(data.subjectSubgroups));
+          if (data.subjectSubgroups && typeof data.subjectSubgroups === "object") {
+            const clean = {};
+            for (const [k, v] of Object.entries(data.subjectSubgroups)) {
+              if (v && v !== "default" && v !== "") {
+                clean[k] = String(v);
+              }
+            }
+            localStorage.setItem("nntu_subject_subgroups", JSON.stringify(clean));
+          } else {
+            localStorage.setItem("nntu_subject_subgroups", JSON.stringify({}));
+          }
+          if (Array.isArray(data.dismissedSubjectSubgroups)) {
+            localStorage.setItem("nntu_dismissed_subject_subgroups", JSON.stringify(data.dismissedSubjectSubgroups));
           }
           if (data.defaultSubgroup) {
             localStorage.setItem("nntu_default_subgroup", data.defaultSubgroup);
@@ -422,9 +433,25 @@ class FirebaseService {
     }
     if (remoteData.subjectSubgroups !== undefined) {
       const currentSubMap = localStorage.getItem("nntu_subject_subgroups");
-      const remoteSubMapStr = JSON.stringify(remoteData.subjectSubgroups || {});
+      const cleanRemote = {};
+      if (remoteData.subjectSubgroups && typeof remoteData.subjectSubgroups === "object") {
+        for (const [k, v] of Object.entries(remoteData.subjectSubgroups)) {
+          if (v && v !== "default" && v !== "") {
+            cleanRemote[k] = String(v);
+          }
+        }
+      }
+      const remoteSubMapStr = JSON.stringify(cleanRemote);
       if (currentSubMap !== remoteSubMapStr) {
         localStorage.setItem("nntu_subject_subgroups", remoteSubMapStr);
+        hasChanges = true;
+      }
+    }
+    if (remoteData.dismissedSubjectSubgroups !== undefined && Array.isArray(remoteData.dismissedSubjectSubgroups)) {
+      const currentDismissed = localStorage.getItem("nntu_dismissed_subject_subgroups");
+      const remoteDismissedStr = JSON.stringify(remoteData.dismissedSubjectSubgroups);
+      if (currentDismissed !== remoteDismissedStr) {
+        localStorage.setItem("nntu_dismissed_subject_subgroups", remoteDismissedStr);
         hasChanges = true;
       }
     }
@@ -478,8 +505,21 @@ class FirebaseService {
     if (profileData.group) {
       localStorage.setItem("nntu_current_group", profileData.group);
     }
+
+    let cleanSubMap = null;
     if (profileData.subjectSubgroups !== undefined) {
-      localStorage.setItem("nntu_subject_subgroups", JSON.stringify(profileData.subjectSubgroups || {}));
+      cleanSubMap = {};
+      if (profileData.subjectSubgroups && typeof profileData.subjectSubgroups === "object") {
+        for (const [k, v] of Object.entries(profileData.subjectSubgroups)) {
+          if (v && v !== "default" && v !== "") {
+            cleanSubMap[k] = String(v);
+          }
+        }
+      }
+      localStorage.setItem("nntu_subject_subgroups", JSON.stringify(cleanSubMap));
+    }
+    if (profileData.dismissedSubjectSubgroups !== undefined) {
+      localStorage.setItem("nntu_dismissed_subject_subgroups", JSON.stringify(profileData.dismissedSubjectSubgroups || []));
     }
     if (profileData.defaultSubgroup !== undefined) {
       localStorage.setItem("nntu_default_subgroup", profileData.defaultSubgroup);
@@ -503,7 +543,7 @@ class FirebaseService {
     const payload = {
       nickname: profileData.nickname || localStorage.getItem("nntu_app_nickname") || login,
       group: profileData.group || localStorage.getItem("nntu_current_group") || "",
-      device: "Windows Desktop",
+      device: (typeof window !== "undefined" && !!window.AndroidWidget) ? "Android Mobile" : "Windows Desktop",
       updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue) 
         ? firebase.firestore.FieldValue.serverTimestamp() 
         : new Date().toISOString()
@@ -512,18 +552,37 @@ class FirebaseService {
     if (profileData.avatar !== undefined) {
       payload.avatar = profileData.avatar || null;
     }
-    if (profileData.subjectSubgroups !== undefined) {
-      payload.subjectSubgroups = profileData.subjectSubgroups;
-    }
     if (profileData.defaultSubgroup !== undefined) {
       payload.defaultSubgroup = profileData.defaultSubgroup;
     }
     if (profileData.subgroup !== undefined) {
       payload.subgroup = profileData.subgroup;
     }
+    if (profileData.dismissedSubjectSubgroups !== undefined) {
+      payload.dismissedSubjectSubgroups = profileData.dismissedSubjectSubgroups;
+    } else {
+      try {
+        const rawDis = localStorage.getItem("nntu_dismissed_subject_subgroups");
+        if (rawDis) payload.dismissedSubjectSubgroups = JSON.parse(rawDis);
+      } catch (_) {}
+    }
 
     try {
-      await this.db.collection("users").doc(login).set(payload, { merge: true });
+      const userRef = this.db.collection("users").doc(login);
+      
+      // Step A: Save scalar profile fields with merge: true (preserves passwordHash, createdAt, etc.)
+      await userRef.set(payload, { merge: true });
+
+      // Step B: IMPORTANT! In Firestore, set(payload, { merge: true }) merges nested maps recursively
+      // and will NEVER delete removed keys from a map!
+      // Therefore, we use userRef.update({ subjectSubgroups: cleanSubMap }) to completely OVERWRITE
+      // the map and purge deleted / "default" keys directly in Firestore.
+      if (cleanSubMap !== null) {
+        await userRef.update({
+          subjectSubgroups: cleanSubMap
+        });
+      }
+
       this.updateStatus("online");
       return { success: true, cloud: true };
     } catch (err) {

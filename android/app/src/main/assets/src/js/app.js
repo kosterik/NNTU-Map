@@ -273,6 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
         subgroup: sub,
         avatar: av,
         subjectSubgroups: scheduleManager.getSubjectSubgroups(),
+        dismissedSubjectSubgroups: scheduleManager.getDismissedSubjectSubgroups(),
         defaultSubgroup: scheduleManager.getDefaultSubgroup()
       });
     }, 1500);
@@ -409,14 +410,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (detected.length === 0) {
       notificationService.showToast("ℹ️ В текущем расписании не найдено занятий с делением на подгруппы");
     } else {
-      const map = scheduleManager.getSubjectSubgroups();
-      detected.forEach(sub => {
-        if (!map[sub]) {
-          map[sub] = "default";
-        }
-      });
-      localStorage.setItem("nntu_subject_subgroups", JSON.stringify(map));
       renderProfileSubjectSubgroups();
+      triggerCloudSync();
       notificationService.showToast(`🔍 Найдено предметов с подгруппами: ${detected.length}`);
     }
   });
@@ -513,6 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
       subgroup: "profile",
       avatar: localStorage.getItem("nntu_user_avatar"),
       subjectSubgroups: subMap,
+      dismissedSubjectSubgroups: scheduleManager.getDismissedSubjectSubgroups(),
       defaultSubgroup: defSub
     });
 
@@ -635,6 +631,7 @@ document.addEventListener("DOMContentLoaded", () => {
       group: localStorage.getItem("nntu_current_group") || "",
       avatar: localStorage.getItem("nntu_user_avatar"),
       subjectSubgroups: scheduleManager.getSubjectSubgroups(),
+      dismissedSubjectSubgroups: scheduleManager.getDismissedSubjectSubgroups(),
       defaultSubgroup: scheduleManager.getDefaultSubgroup(),
       subgroup: localStorage.getItem("nntu_current_subgroup") || "profile"
     });
@@ -1225,7 +1222,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     try {
-      const currentVersion = "v2.1.2"; // current installed version
+      const currentVersion = "v2.1.3"; // current installed version
       let latestVersion = null;
       let downloadUrl = "";
       let releaseNotes = "";

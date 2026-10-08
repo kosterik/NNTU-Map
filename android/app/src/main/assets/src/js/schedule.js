@@ -748,6 +748,7 @@ class ScheduleManager {
     const clean = this.cleanSubjectName(subjectName);
     const map = this.getSubjectSubgroups();
     delete map[clean];
+    delete map[subjectName];
     localStorage.setItem("nntu_subject_subgroups", JSON.stringify(map));
 
     const dismissed = this.getDismissedSubjectSubgroups();
@@ -768,7 +769,16 @@ class ScheduleManager {
   getSubjectSubgroups() {
     try {
       const raw = localStorage.getItem("nntu_subject_subgroups");
-      return raw ? JSON.parse(raw) : {};
+      const map = raw ? JSON.parse(raw) : {};
+      const cleanMap = {};
+      const dismissed = this.getDismissedSubjectSubgroups();
+      for (const [k, v] of Object.entries(map)) {
+        const cleanK = this.cleanSubjectName(k);
+        if (v && v !== "default" && v !== "" && !dismissed.includes(cleanK)) {
+          cleanMap[cleanK] = String(v);
+        }
+      }
+      return cleanMap;
     } catch (_) {
       return {};
     }
@@ -778,8 +788,9 @@ class ScheduleManager {
     if (!subjectName) return;
     const clean = this.cleanSubjectName(subjectName);
     const map = this.getSubjectSubgroups();
-    if (subgroup === null || subgroup === undefined) {
+    if (subgroup === null || subgroup === undefined || subgroup === "default" || subgroup === "") {
       delete map[clean];
+      delete map[subjectName];
     } else {
       map[clean] = String(subgroup);
       this.undismissSubjectSubgroup(clean);
