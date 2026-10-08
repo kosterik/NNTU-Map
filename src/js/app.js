@@ -760,14 +760,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderInlineRegGroups(query = "") {
     if (!inlineRegGroupList) return;
-    const defaultSample = [
-      "24-ИС-1", "25-ИВТ-4-1", "26-ИВТ-4-1", "24-ПМ-1", "24-А", "23-ЭЭС", "24-БД-1",
-      "22-АХз", "22-БТПз", "22-ВМв", "22-ВМз", "22ДиАз", "22ИНз", "23-ИВТ-1", "23-ИС-1",
-      "24-ИВТ-1", "24-ИВТ-2", "24-ИВТ-3", "25-ИС-1", "25-ПМ-1"
-    ];
     const sourceGroups = (scheduleManager.availableGroups && scheduleManager.availableGroups.length > 0)
       ? scheduleManager.availableGroups
-      : defaultSample;
+      : [];
 
     const q = query.trim().toLowerCase();
     const filtered = sourceGroups.filter(g => !q || g.toLowerCase().includes(q));
@@ -782,7 +777,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const currentVal = inlineRegGroupInput?.value.trim() || "";
-    inlineRegGroupList.innerHTML = filtered.slice(0, 3000).map(g => {
+    // При открытии без запроса выводим максимум 60 штук, а при поиске — ВСЕ найденные
+    const toRender = !q ? filtered.slice(0, 60) : filtered;
+
+    let hintHtml = "";
+    if (!q && filtered.length > 60) {
+      hintHtml = `
+        <div style="font-size:11px; color:var(--color-fg-muted); padding:4px 8px; margin-bottom:4px; text-align:center;">
+          Показано 60 из ${filtered.length} групп. Введите номер (например, 26-), чтобы найти свою группу.
+        </div>
+      `;
+    } else if (q) {
+      hintHtml = `
+        <div style="font-size:11px; color:var(--color-fg-muted); padding:4px 8px; margin-bottom:4px; text-align:center;">
+          Найдено групп: ${filtered.length}
+        </div>
+      `;
+    }
+
+    inlineRegGroupList.innerHTML = hintHtml + toRender.map(g => {
       const isSelected = g.toLowerCase() === currentVal.toLowerCase();
       return `
         <button type="button" class="btn-gh inline-reg-group-item" data-group="${g}" style="text-align:left; display:flex; justify-content:space-between; align-items:center; padding:6px 10px; font-size:13px; font-weight:${isSelected ? '600' : 'normal'}; background:${isSelected ? 'var(--color-accent-subtle)' : 'transparent'};">
@@ -1068,21 +1081,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderGroupSearchResults(query = "") {
     if (!groupResultsContainer) return;
-    const allGroups = scheduleManager.availableGroups || [];
+    const allGroups = (scheduleManager.availableGroups && scheduleManager.availableGroups.length > 0)
+      ? scheduleManager.availableGroups
+      : [];
     const q = query.trim().toLowerCase();
     const filtered = allGroups.filter(g => !q || g.toLowerCase().includes(q));
 
     if (filtered.length === 0) {
       groupResultsContainer.innerHTML = `
         <div style="font-size:12px; color:var(--color-fg-muted); padding:8px; text-align:center;">
-          Группы по запросу "${query}" не найдены
+          Группы по запросу "${query}" не найдены в базе НГТУ
         </div>
       `;
       return;
     }
 
     const currentGroup = localStorage.getItem("nntu_current_group") || "";
-    groupResultsContainer.innerHTML = filtered.slice(0, 3000).map(g => {
+    // При открытии без запроса выводим максимум 60 штук, а при вводе запроса (например "26-") выводим ВСЕ найденные группы!
+    const toRender = !q ? filtered.slice(0, 60) : filtered;
+
+    let hintHtml = "";
+    if (!q && filtered.length > 60) {
+      hintHtml = `
+        <div style="font-size:11px; color:var(--color-fg-muted); padding:4px 8px; margin-bottom:6px; background:var(--color-canvas-subtle); border-radius:6px; text-align:center;">
+          Показано 60 из ${filtered.length} групп. Введите номер (например, 26-), чтобы найти свою группу.
+        </div>
+      `;
+    } else if (q) {
+      hintHtml = `
+        <div style="font-size:11px; color:var(--color-fg-muted); padding:4px 8px; margin-bottom:6px; background:var(--color-canvas-subtle); border-radius:6px; text-align:center;">
+          Найдено групп: ${filtered.length}
+        </div>
+      `;
+    }
+
+    groupResultsContainer.innerHTML = hintHtml + toRender.map(g => {
       const isCurrent = g === currentGroup;
       return `
         <button type="button" class="btn-gh group-result-item" data-group="${g}" style="text-align:left; display:flex; justify-content:space-between; align-items:center; padding:6px 12px; font-size:13px; font-weight:${isCurrent ? '600' : 'normal'}; background:${isCurrent ? 'var(--color-accent-subtle)' : 'transparent'};">
@@ -1154,7 +1187,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Auto Updates
   document.getElementById("btn-check-updates")?.addEventListener("click", async () => {
     try {
-      const currentVersion = "v2.0.6"; // current version for next release
+      const currentVersion = "v2.1.0"; // current version for next release
       const response = await fetch("https://api.github.com/repos/kosterik/NNTU-Map/releases/latest");
       const data = await response.json();
       

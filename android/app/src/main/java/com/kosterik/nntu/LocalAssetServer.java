@@ -157,38 +157,44 @@ public class LocalAssetServer {
 
             // Proxy to my-api.nntu.ru for /api/
             if (path.equals("api/schedule/groups")) {
+                boolean proxied = false;
                 try {
                     java.net.URL url = new java.net.URL("https://my-api.nntu.ru/lesson-schedule/public/groups");
                     java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
-                    conn.setConnectTimeout(5000);
-                    conn.setReadTimeout(5000);
+                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
+                    conn.setRequestProperty("Accept", "application/json, text/plain, */*");
+                    conn.setConnectTimeout(6000);
+                    conn.setReadTimeout(6000);
 
                     int code = conn.getResponseCode();
-                    String cType = conn.getContentType();
-                    
-                    StringBuilder proxySb = new StringBuilder();
-                    proxySb.append("HTTP/1.1 ").append(code).append(" OK\r\n");
-                    if (cType != null) {
-                        proxySb.append("Content-Type: ").append(cType).append("\r\n");
-                    }
-                    proxySb.append("Access-Control-Allow-Origin: *\r\n");
-                    proxySb.append("Connection: close\r\n\r\n");
-                    out.write(proxySb.toString().getBytes("UTF-8"));
+                    if (code == 200) {
+                        String cType = conn.getContentType();
+                        StringBuilder proxySb = new StringBuilder();
+                        proxySb.append("HTTP/1.1 200 OK\r\n");
+                        proxySb.append("Content-Type: ").append(cType != null ? cType : "application/json; charset=UTF-8").append("\r\n");
+                        proxySb.append("Access-Control-Allow-Origin: *\r\n");
+                        proxySb.append("Connection: close\r\n\r\n");
+                        out.write(proxySb.toString().getBytes("UTF-8"));
 
-                    InputStream proxyIn = code >= 400 ? conn.getErrorStream() : conn.getInputStream();
-                    if (proxyIn != null) {
-                        byte[] proxyBuf = new byte[8192];
-                        int proxyRead;
-                        while ((proxyRead = proxyIn.read(proxyBuf)) != -1) {
-                            out.write(proxyBuf, 0, proxyRead);
+                        InputStream proxyIn = conn.getInputStream();
+                        if (proxyIn != null) {
+                            byte[] proxyBuf = new byte[8192];
+                            int proxyRead;
+                            while ((proxyRead = proxyIn.read(proxyBuf)) != -1) {
+                                out.write(proxyBuf, 0, proxyRead);
+                            }
+                            proxyIn.close();
                         }
-                        proxyIn.close();
+                        out.flush();
+                        proxied = true;
                     }
-                    out.flush();
                 } catch (Exception e) {
-                    Log.e(TAG, "Proxy failed", e);
-                    sendResponse(out, 500, "Proxy Error", "application/json", "[]".getBytes("UTF-8"));
+                    Log.e(TAG, "Proxy groups failed, serving local fallback", e);
+                }
+
+                if (!proxied) {
+                    serveLocalAsset(out, "src/data/groups.json", "application/json; charset=UTF-8");
                 }
                 client.close();
                 return;
@@ -251,6 +257,44 @@ public class LocalAssetServer {
                 client.close();
             } catch (Exception ignored) {}
         }
+    }
+
+    private void serveLocalAsset(BufferedOutputStream out, String assetPath, String mimeType) {
+        try {
+            InputStream is = null;
+            try {
+                is = mAssetManager.open(assetPath);
+            } catch (Exception e) {
+                try {
+                    is = mAssetManager.open("app_assets/groups_cache.json");
+                } catch (Exception ignored) {}
+            }
+            if (is != null) {
+                int length = is.available();
+                StringBuilder sb = new StringBuilder();
+                sb.append("HTTP/1.1 200 OK\r\n");
+                sb.append("Content-Type: ").append(mimeType).append("\r\n");
+                sb.append("Access-Control-Allow-Origin: *\r\n");
+                sb.append("Connection: close\r\n");
+                if (length > 0) {
+                    sb.append("Content-Length: ").append(length).append("\r\n");
+                }
+                sb.append("\r\n");
+                out.write(sb.toString().getBytes("UTF-8"));
+
+                byte[] buf = new byte[8192];
+                int r;
+                while ((r = is.read(buf)) != -1) {
+                    out.write(buf, 0, r);
+                }
+                is.close();
+                out.flush();
+                return;
+            }
+        } catch (Exception ignored) {}
+        try {
+            sendResponse(out, 200, "OK", mimeType, "[]".getBytes("UTF-8"));
+        } catch (Exception ignored) {}
     }
 
     private void sendResponse(OutputStream out, int status, String message, String mime, byte[] data) {

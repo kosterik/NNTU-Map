@@ -118,6 +118,8 @@ class ScheduleManager {
 
   async loadAvailableGroups() {
     this.availableGroups = [];
+
+    // 1. Try local server proxy
     try {
       const resp = await fetch("/api/schedule/groups");
       if (resp.ok) {
@@ -127,19 +129,198 @@ class ScheduleManager {
         }
       }
     } catch (e) {
-      console.warn("Could not fetch groups from API", e);
+      console.warn("Could not fetch groups from /api/schedule/groups", e);
     }
 
+    // 2. Try direct NNTU API (supported via CORS)
+    if (!this.availableGroups.length) {
+      try {
+        const resp2 = await fetch("https://my-api.nntu.ru/lesson-schedule/public/groups");
+        if (resp2.ok) {
+          const data2 = await resp2.json();
+          if (Array.isArray(data2) && data2.length > 0) {
+            this.availableGroups = data2;
+          }
+        }
+      } catch (e) {
+        console.warn("Direct NNTU API groups fetch failed", e);
+      }
+    }
+
+    // 3. Bundled offline groups list (all 658+ groups)
+    if (!this.availableGroups.length) {
+      try {
+        let gResp = await fetch("/src/data/groups.json").catch(() => null);
+        if (!gResp || !gResp.ok) {
+          gResp = await fetch("data/groups.json").catch(() => null);
+        }
+        if (gResp && gResp.ok) {
+          const list = await gResp.json();
+          if (Array.isArray(list) && list.length > 0) {
+            this.availableGroups = list;
+          }
+        }
+      } catch (err) {}
+    }
+
+    // 4. Bundled groups catalog fallback
     if (!this.availableGroups.length) {
       try {
         let gResp = await fetch("/src/data/groups_catalog.json").catch(() => null);
         if (!gResp || !gResp.ok) {
-          gResp = await fetch("data/groups_catalog.json");
+          gResp = await fetch("data/groups_catalog.json").catch(() => null);
         }
-        const cat = await gResp.json();
-        this.availableGroups = Object.keys(cat);
+        if (gResp && gResp.ok) {
+          const cat = await gResp.json();
+          this.availableGroups = Array.isArray(cat) ? cat : Object.keys(cat);
+        }
       } catch (err) {}
     }
+
+    // Clean and purge any empty or obsolete placeholder entries (like 26-02010)
+    this.availableGroups = (this.availableGroups || [])
+      .filter(g => typeof g === "string" && g.trim().length > 0 && g.trim() !== "26-02010");
+  }
+
+  convertNntuRawSchedule(rawData, groupName) {
+    if (!rawData || (!rawData.currentWeek && !rawData.nextWeek)) return null;
+
+    const daysMap = {
+      "понедельник": "1", "пн": "1",
+      "вторник": "2", "вт": "2",
+      "среда": "3", "ср": "3",
+      "четверг": "4", "чт": "4",
+      "пятница": "5", "пт": "5",
+      "суббота": "6", "сб": "6"
+    };
+
+    const typeMap = {
+      "лекции": "Лекция",
+      "лекция": "Лекция",
+      "практические занятия": "Практика",
+      "практика": "Практика",
+      "лабораторные работы": "Лабораторная",
+      "лабораторная": "Лабораторная",
+      "консультация": "Консультация",
+      "зачет": "Зачёт",
+      "экзамен": "Экзамен"
+    };
+
+    const times = rawData.times || [
+      "",
+      "08:00 - 09:35",
+      "09:45 - 11:20",
+      "11:35 - 13:10",
+      "13:40 - 15:15",
+      "15:25 - 17:00",
+      "17:10 - 18:45",
+      "18:55 - 20:30",
+      "20:40 - 22:15"
+    ];
+
+    function parseRoomBuilding(roomStr) {
+      if (!roomStr) return { room: "Ауд.", building: "1" };
+      const clean = roomStr.trim();
+      const mB = clean.match(/корп(?:ус|\.)?\s*№?\s*(\d+)/i);
+      let bNum = mB ? mB[1] : null;
+
+      const mR = clean.match(/\b(\d{3,4}[а-яА-Я]?)\b/);
+      let rNum = mR ? mR[1] : clean;
+
+      if (!bNum) {
+        if (/^[1-6]\d{3}/.test(rNum)) {
+          bNum = rNum[0];
+        } else {
+          bNum = "1";
+        }
+      }
+      return { room: rNum, building: bNum };
+    }
+
+    function processWeek(weekDays, label) {
+      const daysDict = {
+        "1": { name: "Понедельник", date: "", lessons: [] },
+        "2": { name: "Вторник", date: "", lessons: [] },
+        "3": { name: "Среда", date: "", lessons: [] },
+        "4": { name: "Четверг", date: "", lessons: [] },
+        "5": { name: "Пятница", date: "", lessons: [] },
+        "6": { name: "Суббота", date: "", lessons: [] }
+      };
+
+      for (const item of (weekDays || [])) {
+        const rawTitle = (item.dayOfTheWeek || "").trim();
+        const dayTitle = rawTitle.toLowerCase();
+        let dayKey = null;
+        for (const [ruDay, k] of Object.entries(daysMap)) {
+          if (dayTitle.includes(ruDay)) {
+            dayKey = k;
+            break;
+          }
+        }
+        if (!dayKey || !daysDict[dayKey]) continue;
+
+        if (rawTitle.includes(",")) {
+          daysDict[dayKey].date = rawTitle.split(",")[1].trim();
+        }
+
+        for (const el of (item.lessonElements || [])) {
+          const subj = (el.subject || "").trim();
+          if (!subj) continue;
+          const tIdx = el.timeIndex || 1;
+          let tStr = (tIdx < times.length) ? times[tIdx] : "09:45 - 11:20";
+          tStr = tStr.replace("—", " - ");
+          const stypeRaw = (el.studyType || "").trim().toLowerCase();
+          const stype = typeMap[stypeRaw] || el.studyType || "Занятие";
+
+          const roomRaw = el.room || "";
+          const { room: rNum, building: bNum } = parseRoomBuilding(roomRaw);
+          const teacher = (el.teacher || "").trim();
+
+          daysDict[dayKey].lessons.push({
+            pair: tIdx,
+            time: tStr,
+            subject: subj,
+            type: stype,
+            room: rNum,
+            building: bNum,
+            teacher: teacher,
+            rawRoom: roomRaw
+          });
+        }
+      }
+      return { name: label, days: daysDict };
+    }
+
+    const now = new Date();
+    const weekInfo = this.getStudyWeekInfo();
+    const isCurrentEven = weekInfo.isCurrentEven;
+    const weekNum = weekInfo.currentWeekNum;
+
+    const currRaw = rawData.currentWeek || [];
+    const nextRaw = rawData.nextWeek || [];
+
+    const evenRaw = isCurrentEven ? currRaw : nextRaw;
+    const oddRaw = isCurrentEven ? nextRaw : currRaw;
+
+    const evenWeekData = processWeek(evenRaw, `${isCurrentEven ? weekNum : weekNum + 1} неделя (Чётная)`);
+    const oddWeekData = processWeek(oddRaw, `${!isCurrentEven ? weekNum : weekNum + 1} неделя (Нечётная)`);
+
+    return {
+      group: groupName,
+      faculty: "НГТУ им. Р.Е. Алексеева",
+      semester: `Учебный семестр ${now.getFullYear()}/${now.getFullYear() + 1}`,
+      lastSync: new Date().toLocaleString("ru-RU"),
+      currentWeekNum: weekNum,
+      isCurrentEven: isCurrentEven,
+      weeks: {
+        numerator: oddWeekData,
+        denominator: evenWeekData,
+        even: evenWeekData,
+        odd: oddWeekData,
+        current: isCurrentEven ? evenWeekData : oddWeekData,
+        next: isCurrentEven ? oddWeekData : evenWeekData
+      }
+    };
   }
 
   async fetchGroupSchedule(groupName) {
@@ -147,7 +328,7 @@ class ScheduleManager {
     const cleanGroup = groupName.trim();
     localStorage.setItem("nntu_current_group", cleanGroup);
 
-    // 1. Try live API first (proxy to my-api.nntu.ru)
+    // 1. Try local proxy API
     try {
       const resp = await fetch(`/api/schedule/group?name=${encodeURIComponent(cleanGroup)}`);
       if (resp.ok) {
@@ -163,7 +344,25 @@ class ScheduleManager {
       console.warn("API schedule fetch failed", e);
     }
 
-    // 2. Fallback: check cached schedule
+    // 2. Try direct NNTU public API
+    try {
+      const directUrl = `https://my-api.nntu.ru/lesson-schedule/public/group-schedule?groupName=${encodeURIComponent(cleanGroup)}`;
+      const respDirect = await fetch(directUrl);
+      if (respDirect.ok) {
+        const rawJson = await respDirect.json();
+        const converted = this.convertNntuRawSchedule(rawJson, cleanGroup);
+        if (converted) {
+          this.scheduleData = converted;
+          localStorage.setItem("nntu_student_schedule", JSON.stringify(converted));
+          localStorage.setItem(`nntu_schedule_${cleanGroup}`, JSON.stringify(converted));
+          return true;
+        }
+      }
+    } catch (e) {
+      console.warn("Direct NNTU API schedule fetch failed", e);
+    }
+
+    // 3. Fallback: check cached schedule
     const cached = localStorage.getItem(`nntu_schedule_${cleanGroup}`) || localStorage.getItem("nntu_student_schedule");
     if (cached) {
       try {
@@ -172,7 +371,7 @@ class ScheduleManager {
       } catch (e) {}
     }
 
-    // 3. Fallback: default schedule
+    // 4. Fallback: default schedule
     try {
       let resp = await fetch("/src/data/default_schedule.json").catch(() => null);
       if (!resp || !resp.ok) {
