@@ -79,10 +79,29 @@ class NotificationService {
     const alarmRow = document.getElementById("row-system-alarm");
     const alarmBtn = document.getElementById("btn-set-alarm");
     const alarmOffset = document.getElementById("notif-alarm-offset");
+    if (alarmOffset) {
+      const savedOffset = localStorage.getItem("nntu_alarm_offset");
+      if (savedOffset) {
+        alarmOffset.value = savedOffset;
+      }
+      alarmOffset.addEventListener("input", (e) => {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val) && val > 0) {
+          localStorage.setItem("nntu_alarm_offset", val.toString());
+        }
+      });
+      alarmOffset.addEventListener("change", (e) => {
+        const val = parseInt(e.target.value) || 80;
+        localStorage.setItem("nntu_alarm_offset", val.toString());
+        this.showToast(`⏰ Время до первой пары сохранено: ${val} мин.`);
+      });
+    }
     if (window.AndroidWidget && alarmRow && alarmBtn) {
       alarmRow.style.display = "flex";
       alarmBtn.addEventListener("click", () => {
-        const offset = parseInt(alarmOffset.value) || 80;
+        const savedOffset = parseInt(localStorage.getItem("nntu_alarm_offset"));
+        const offset = parseInt(alarmOffset?.value) || savedOffset || 80;
+        localStorage.setItem("nntu_alarm_offset", offset.toString());
         this.setSystemAlarm(offset);
       });
     }

@@ -38,9 +38,21 @@ class ScheduleManager {
   }
 
   async init() {
-    await this.loadData();
     this.detectCurrentTimeState();
     this.bindEvents();
+
+    // 0. INSTANT OFFLINE RENDER: Load and display cached schedule immediately (0ms)
+    const savedGroup = localStorage.getItem("nntu_current_group") || "26-ИВТ-4-1";
+    const cached = localStorage.getItem(`nntu_schedule_${savedGroup}`) || localStorage.getItem("nntu_student_schedule");
+    if (cached) {
+      try {
+        this.scheduleData = JSON.parse(cached);
+        this.render();
+      } catch (e) {}
+    }
+
+    // 1. Fetch fresh schedule and available groups in background
+    await this.loadData();
     this.render();
   }
 
@@ -87,42 +99,37 @@ class ScheduleManager {
   }
 
   async loadData() {
-    // Invalidate stale cached schedules that had inverted week mapping
-    const cacheVer = localStorage.getItem("nntu_schedule_cache_ver");
-    if (cacheVer !== "2026_v5") {
-      localStorage.removeItem("nntu_student_schedule");
-      const savedGroup = localStorage.getItem("nntu_current_group");
-      if (savedGroup) localStorage.removeItem(`nntu_schedule_${savedGroup}`);
-      localStorage.setItem("nntu_schedule_cache_ver", "2026_v5");
-    }
-
-    // 1. Load available groups from server API
-    await this.loadAvailableGroups();
-
-    // 2. Load schedule for current group (default to user group 26-ИВТ-4-1)
     const savedGroup = localStorage.getItem("nntu_current_group");
     const initialGroup = savedGroup || "26-ИВТ-4-1";
-    await this.fetchGroupSchedule(initialGroup);
 
-    // 3. Bells data
-    try {
-      const bResp = await fetch("/src/data/bells.json");
-      this.bellsData = await bResp.json();
-    } catch (e) {
+    // 1. Fetch group schedule
+    const schedPromise = this.fetchGroupSchedule(initialGroup);
+
+    // 2. Load available groups in parallel
+    const groupsPromise = this.loadAvailableGroups();
+
+    // 3. Bells data in parallel
+    const bellsPromise = (async () => {
       try {
-        const bResp2 = await fetch("data/bells.json");
-        this.bellsData = await bResp2.json();
-      } catch (err) {}
-    }
+        let bResp = await fetch("/src/data/bells.json").catch(() => null);
+        if (!bResp || !bResp.ok) bResp = await fetch("data/bells.json").catch(() => null);
+        if (bResp && bResp.ok) this.bellsData = await bResp.json();
+      } catch (e) {}
+    })();
+
+    await Promise.all([schedPromise, groupsPromise, bellsPromise]);
   }
 
   async loadAvailableGroups() {
     this.availableGroups = [];
 
-    // 1. Try local server proxy
+    // 1. Try local server proxy (3.5s timeout)
     try {
-      const resp = await fetch("/api/schedule/groups");
-      if (resp.ok) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3500);
+      const resp = await fetch("/api/schedule/groups", { signal: controller.signal }).catch(() => null);
+      clearTimeout(timer);
+      if (resp && resp.ok) {
         const data = await resp.json();
         if (Array.isArray(data) && data.length > 0) {
           this.availableGroups = data;
@@ -132,11 +139,14 @@ class ScheduleManager {
       console.warn("Could not fetch groups from /api/schedule/groups", e);
     }
 
-    // 2. Try direct NNTU API (supported via CORS)
+    // 2. Try direct NNTU API (3.5s timeout)
     if (!this.availableGroups.length) {
       try {
-        const resp2 = await fetch("https://my-api.nntu.ru/lesson-schedule/public/groups");
-        if (resp2.ok) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 3500);
+        const resp2 = await fetch("https://my-api.nntu.ru/lesson-schedule/public/groups", { signal: controller.signal }).catch(() => null);
+        clearTimeout(timer);
+        if (resp2 && resp2.ok) {
           const data2 = await resp2.json();
           if (Array.isArray(data2) && data2.length > 0) {
             this.availableGroups = data2;
@@ -328,10 +338,26 @@ class ScheduleManager {
     const cleanGroup = groupName.trim();
     localStorage.setItem("nntu_current_group", cleanGroup);
 
-    // 1. Try local proxy API
+    // 0. Ensure we load cache immediately into this.scheduleData if not already loaded
+    if (!this.scheduleData || this.scheduleData.group !== cleanGroup) {
+      const cached = localStorage.getItem(`nntu_schedule_${cleanGroup}`) || localStorage.getItem("nntu_student_schedule");
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (parsed && (parsed.group === cleanGroup || !this.scheduleData)) {
+            this.scheduleData = parsed;
+          }
+        } catch (e) {}
+      }
+    }
+
+    // 1. Try local proxy API (3.5s timeout)
     try {
-      const resp = await fetch(`/api/schedule/group?name=${encodeURIComponent(cleanGroup)}`);
-      if (resp.ok) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3500);
+      const resp = await fetch(`/api/schedule/group?name=${encodeURIComponent(cleanGroup)}`, { signal: controller.signal }).catch(() => null);
+      clearTimeout(timer);
+      if (resp && resp.ok) {
         const res = await resp.json();
         if (res.success && res.schedule) {
           this.scheduleData = res.schedule;
@@ -344,11 +370,14 @@ class ScheduleManager {
       console.warn("API schedule fetch failed", e);
     }
 
-    // 2. Try direct NNTU public API
+    // 2. Try direct NNTU public API (3.5s timeout)
     try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3500);
       const directUrl = `https://my-api.nntu.ru/lesson-schedule/public/group-schedule?groupName=${encodeURIComponent(cleanGroup)}`;
-      const respDirect = await fetch(directUrl);
-      if (respDirect.ok) {
+      const respDirect = await fetch(directUrl, { signal: controller.signal }).catch(() => null);
+      clearTimeout(timer);
+      if (respDirect && respDirect.ok) {
         const rawJson = await respDirect.json();
         const converted = this.convertNntuRawSchedule(rawJson, cleanGroup);
         if (converted) {
@@ -375,10 +404,13 @@ class ScheduleManager {
     try {
       let resp = await fetch("/src/data/default_schedule.json").catch(() => null);
       if (!resp || !resp.ok) {
-        resp = await fetch("data/default_schedule.json");
+        resp = await fetch("data/default_schedule.json").catch(() => null);
       }
-      this.scheduleData = await resp.json();
-      this.scheduleData.group = cleanGroup;
+      if (resp && resp.ok) {
+        this.scheduleData = await resp.json();
+        this.scheduleData.group = cleanGroup;
+        return true;
+      }
     } catch (err) {}
 
     return false;
@@ -702,6 +734,37 @@ class ScheduleManager {
       .trim();
   }
 
+  getDismissedSubjectSubgroups() {
+    try {
+      const raw = localStorage.getItem("nntu_dismissed_subject_subgroups");
+      return raw ? JSON.parse(raw) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  dismissSubjectSubgroup(subjectName) {
+    if (!subjectName) return;
+    const clean = this.cleanSubjectName(subjectName);
+    const map = this.getSubjectSubgroups();
+    delete map[clean];
+    localStorage.setItem("nntu_subject_subgroups", JSON.stringify(map));
+
+    const dismissed = this.getDismissedSubjectSubgroups();
+    if (!dismissed.includes(clean)) {
+      dismissed.push(clean);
+      localStorage.setItem("nntu_dismissed_subject_subgroups", JSON.stringify(dismissed));
+    }
+    this.render();
+  }
+
+  undismissSubjectSubgroup(subjectName) {
+    if (!subjectName) return;
+    const clean = this.cleanSubjectName(subjectName);
+    const dismissed = this.getDismissedSubjectSubgroups().filter(s => s !== clean);
+    localStorage.setItem("nntu_dismissed_subject_subgroups", JSON.stringify(dismissed));
+  }
+
   getSubjectSubgroups() {
     try {
       const raw = localStorage.getItem("nntu_subject_subgroups");
@@ -715,10 +778,11 @@ class ScheduleManager {
     if (!subjectName) return;
     const clean = this.cleanSubjectName(subjectName);
     const map = this.getSubjectSubgroups();
-    if (!subgroup || subgroup === "all" || subgroup === "default") {
+    if (subgroup === null || subgroup === undefined) {
       delete map[clean];
     } else {
       map[clean] = String(subgroup);
+      this.undismissSubjectSubgroup(clean);
     }
     localStorage.setItem("nntu_subject_subgroups", JSON.stringify(map));
     this.render();
@@ -734,9 +798,11 @@ class ScheduleManager {
     this.render();
   }
 
-  getScheduleSubjectsWithSubgroups() {
+  getScheduleSubjectsWithSubgroups(includeDismissed = false) {
     const subjectsSet = new Set();
     if (!this.scheduleData || !this.scheduleData.weeks) return [];
+
+    const dismissed = includeDismissed ? [] : this.getDismissedSubjectSubgroups();
 
     Object.values(this.scheduleData.weeks).forEach(week => {
       if (!week.days) return;
@@ -745,7 +811,9 @@ class ScheduleManager {
         day.lessons.forEach(lesson => {
           if (this.extractSubgroup(lesson)) {
             const clean = this.cleanSubjectName(lesson.subject);
-            if (clean) subjectsSet.add(clean);
+            if (clean && !dismissed.includes(clean)) {
+              subjectsSet.add(clean);
+            }
           }
         });
       });
@@ -813,7 +881,10 @@ class ScheduleManager {
       }
     }
 
-    if (targetSub && targetSub !== "all" && targetSub !== "default") {
+    if (targetSub === "all") {
+      return true;
+    }
+    if (targetSub && targetSub !== "default") {
       return String(lessonSub) === String(targetSub);
     }
 

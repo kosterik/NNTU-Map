@@ -393,7 +393,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       btnRemove.addEventListener("click", () => {
-        scheduleManager.setSubjectSubgroup(subName, null);
+        scheduleManager.dismissSubjectSubgroup(subName);
         rowEl.remove();
         updateConfiguredCount();
         triggerCloudSync();
@@ -404,7 +404,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Subgroup Profile Event Listeners
   btnDetectSubjects?.addEventListener("click", () => {
-    const detected = scheduleManager.getScheduleSubjectsWithSubgroups();
+    localStorage.removeItem("nntu_dismissed_subject_subgroups");
+    const detected = scheduleManager.getScheduleSubjectsWithSubgroups(true);
     if (detected.length === 0) {
       notificationService.showToast("ℹ️ В текущем расписании не найдено занятий с делением на подгруппы");
     } else {
@@ -442,6 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
       notificationService.showToast("⚠️ Введите название предмета!");
       return;
     }
+    scheduleManager.undismissSubjectSubgroup(name);
     scheduleManager.setSubjectSubgroup(name, subVal);
     if (addSubjectInlineBox) addSubjectInlineBox.style.display = "none";
     if (newSubjectNameInput) newSubjectNameInput.value = "";
@@ -548,12 +550,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      const base64 = event.target.result;
-      localStorage.removeItem("nntu_avatar_preset");
-      localStorage.setItem("nntu_user_avatar", base64);
-      setAvatarDisplay(base64);
-      triggerCloudSync();
-      notificationService.showToast("☁️ Аватарка сохранена в профиль!");
+      const rawBase64 = event.target.result;
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          const size = 256;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          const minDim = Math.min(img.width, img.height);
+          const sx = (img.width - minDim) / 2;
+          const sy = (img.height - minDim) / 2;
+          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+          const compressed = canvas.toDataURL("image/jpeg", 0.85);
+          localStorage.removeItem("nntu_avatar_preset");
+          localStorage.setItem("nntu_user_avatar", compressed);
+          setAvatarDisplay(compressed);
+          triggerCloudSync();
+          notificationService.showToast("☁️ Аватарка сохранена в профиль!");
+        } catch (err) {
+          localStorage.removeItem("nntu_avatar_preset");
+          try {
+            localStorage.setItem("nntu_user_avatar", rawBase64);
+            setAvatarDisplay(rawBase64);
+            triggerCloudSync();
+            notificationService.showToast("☁️ Аватарка сохранена в профиль!");
+          } catch (storageErr) {
+            notificationService.showToast("⚠️ Изображение слишком большое. Выберите фото меньшего размера.");
+          }
+        }
+      };
+      img.onerror = () => {
+        notificationService.showToast("⚠️ Не удалось загрузить выбранное изображение.");
+      };
+      img.src = rawBase64;
     };
     reader.readAsDataURL(file);
   });
@@ -1187,7 +1218,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Auto Updates
   document.getElementById("btn-check-updates")?.addEventListener("click", async () => {
     try {
-      const currentVersion = "v2.1.0"; // current version for next release
+      const currentVersion = "v2.1.1"; // current version for next release
       const response = await fetch("https://api.github.com/repos/kosterik/NNTU-Map/releases/latest");
       const data = await response.json();
       

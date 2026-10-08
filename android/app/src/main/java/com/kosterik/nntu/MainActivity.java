@@ -33,6 +33,8 @@ public class MainActivity extends Activity {
     private WebView mWebView;
     private LocalAssetServer mServer;
     private static final String TAG = "NNTU_MAP";
+    private android.webkit.ValueCallback<Uri[]> mFilePathCallback;
+    private static final int FILE_CHOOSER_REQUEST_CODE = 2001;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -88,6 +90,31 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "[JS] " + consoleMessage.message()
                         + " (" + consoleMessage.sourceId() + ":" + consoleMessage.lineNumber() + ")");
                 return true;
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, android.webkit.ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                if (mFilePathCallback != null) {
+                    mFilePathCallback.onReceiveValue(null);
+                    mFilePathCallback = null;
+                }
+                mFilePathCallback = filePathCallback;
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image/*");
+
+                try {
+                    startActivityForResult(Intent.createChooser(intent, "Выберите аватарку"), FILE_CHOOSER_REQUEST_CODE);
+                    return true;
+                } catch (Exception e) {
+                    Log.e(TAG, "Cannot launch file chooser", e);
+                    if (mFilePathCallback != null) {
+                        mFilePathCallback.onReceiveValue(null);
+                        mFilePathCallback = null;
+                    }
+                    return false;
+                }
             }
         });
 
@@ -162,6 +189,30 @@ public class MainActivity extends Activity {
             mWebView.goBack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILE_CHOOSER_REQUEST_CODE) {
+            if (mFilePathCallback != null) {
+                Uri[] results = null;
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    Uri dataUri = data.getData();
+                    if (dataUri != null) {
+                        results = new Uri[]{dataUri};
+                    } else if (data.getClipData() != null) {
+                        int count = data.getClipData().getItemCount();
+                        results = new Uri[count];
+                        for (int i = 0; i < count; i++) {
+                            results[i] = data.getClipData().getItemAt(i).getUri();
+                        }
+                    }
+                }
+                mFilePathCallback.onReceiveValue(results);
+                mFilePathCallback = null;
+            }
         }
     }
 
