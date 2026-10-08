@@ -5,10 +5,10 @@
 
 <p align="left">
   <a href="https://github.com/kosterik/NNTU-Map/releases/latest/download/NNTU_Map.apk">
-    <img src="https://img.shields.io/badge/Скачать%20Android%20APK-v2.1.1-34A853?style=for-the-badge&logo=android&logoColor=white" alt="Скачать Android APK">
+    <img src="https://img.shields.io/badge/Скачать%20Android%20APK-v2.1.3-34A853?style=for-the-badge&logo=android&logoColor=white" alt="Скачать Android APK">
   </a>
   <a href="https://github.com/kosterik/NNTU-Map/releases/latest/download/NNTU_Map.exe">
-    <img src="https://img.shields.io/badge/Скачать%20Windows%20EXE-v2.0.0-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Скачать Windows EXE">
+    <img src="https://img.shields.io/badge/Скачать%20Windows%20EXE-v2.1.3-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Скачать Windows EXE">
   </a>
   <a href="https://github.com/kosterik/NNTU-Map/releases">
     <img src="https://img.shields.io/badge/Все%20релизы-Releases-181717?style=for-the-badge&logo=github&logoColor=white" alt="Releases">

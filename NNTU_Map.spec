@@ -9,6 +9,7 @@ a = Analysis(
         ('src', 'src'),
         ('app_assets', 'app_assets'),
         ('desktop/notify.ps1', 'desktop'),
+        ('version.json', '.'),
     ],
     hiddenimports=['webview', 'clr', 'pythonnet', 'webview.platforms.winforms'],
     hookspath=[],

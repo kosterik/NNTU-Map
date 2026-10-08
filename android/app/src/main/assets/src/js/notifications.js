@@ -96,7 +96,7 @@ class NotificationService {
         this.showToast(`⏰ Время до первой пары сохранено: ${val} мин.`);
       });
     }
-    if (window.AndroidWidget && alarmRow && alarmBtn) {
+    if (alarmRow && alarmBtn) {
       alarmRow.style.display = "flex";
       alarmBtn.addEventListener("click", () => {
         const savedOffset = parseInt(localStorage.getItem("nntu_alarm_offset"));
@@ -145,15 +145,27 @@ class NotificationService {
 
     const aH = Math.floor(alarmTotalMin / 60);
     const aM = alarmTotalMin % 60;
+    const timeFormatted = `${String(aH).padStart(2, '0')}:${String(aM).padStart(2, '0')}`;
     const message = `НГТУ: ${first.subject} (${first.room})`;
 
     if (window.AndroidWidget && typeof window.AndroidWidget.setAlarmClock === "function") {
       try {
         window.AndroidWidget.setAlarmClock(aH, aM, message);
-        this.showToast(`Будильник передан в систему: ${String(aH).padStart(2,'0')}:${String(aM).padStart(2,'0')}`);
+        this.showToast(`Будильник передан в систему Android: ${timeFormatted}`);
       } catch (err) {
         this.showToast("Ошибка при установке будильника");
       }
+    } else {
+      // Windows Desktop fallback via /api/alarm or native toast
+      fetch("/api/alarm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hour: aH, minute: aM, message: message })
+      }).then(() => {
+        this.showToast(`⏰ Будильник рассчитан на ${timeFormatted} (открыты Часы Windows)`);
+      }).catch(() => {
+        this.showToast(`⏰ Время подъёма: ${timeFormatted} (за ${offsetMinutes} мин до пары)`);
+      });
     }
   }
 

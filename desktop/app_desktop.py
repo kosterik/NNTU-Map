@@ -317,6 +317,9 @@ class AppServer(SimpleHTTPRequestHandler):
         elif clean_path == "/api/notify":
             self.handle_notify()
             return
+        elif clean_path == "/api/alarm":
+            self.handle_alarm()
+            return
         elif clean_path == "/api/open-external":
             self.handle_open_external()
             return
@@ -558,6 +561,24 @@ class AppServer(SimpleHTTPRequestHandler):
             msg = req_data.get("message", "Напоминание о паре")
             send_windows_toast(title, msg)
             self.send_json({"success": True})
+        except Exception as e:
+            self.send_json({"success": False, "error": str(e)})
+
+    def handle_alarm(self):
+        content_length = int(self.headers.get('Content-Length', 0))
+        body = self.rfile.read(content_length).decode('utf-8')
+        try:
+            req_data = json.loads(body)
+            hour = int(req_data.get("hour", 8))
+            minute = int(req_data.get("minute", 0))
+            message = str(req_data.get("message", "НГТУ: Первая пара"))
+            time_str = f"{hour:02d}:{minute:02d}"
+            send_windows_toast("⏰ Будильник к первой паре", f"Время подъёма: {time_str}\n{message}")
+            try:
+                subprocess.Popen(["cmd.exe", "/c", "start", "ms-clock:"], **WIN_SUBPROCESS_KWARGS)
+            except Exception:
+                pass
+            self.send_json({"success": True, "time": time_str})
         except Exception as e:
             self.send_json({"success": False, "error": str(e)})
 
